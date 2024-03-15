@@ -11,8 +11,7 @@
 
 
 /**
- * @swagger
- * 
+ * @swagger 
  * components:
  *   schemas:
  *     Agent:
@@ -83,25 +82,28 @@
  *         description: Internal server error
  * 
  *   get:
- *     summary: Get all agents
- *     description: Retrieve a list of all agents.
- *     security: 
- *       - bearerAuth: []
+ *     summary: Retrieve agents based on a provided key or return all agents if no key is given.
+ *     parameters:
+ *       - in: query
+ *         name: key
+ *         schema:
+ *           type: string
+ *         description: Optional. The key to search for agents.
  *     tags:
  *       - Agents
  *     responses:
- *       200:
- *         description: A list of agents
+ *       '200':
+ *         description: A list of agents matching the provided key or all agents if no key is given.
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Agent'
- *       500:
- *         description: Internal server error
+ *       '500':
+ *         description: Internal server error.
  *
- * /agents/{id}:
+ * /v1/agent/{id}:
  *   get:
  *     summary: Get agent by ID
  *     description: Retrieve an agent by its ID.
@@ -127,4 +129,26 @@
  *         description: Agent not found
  *       '500':
  *         description: Internal server error
+ * 
+ *   patch:
+ *     summary: Update an agent
+ *     description: Update an agentt.
+ *     security: 
+ *       - bearerAuth: []
+ *     tags:
+ *       - Agents
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Agent'
+ *     responses:
+ *       '201':
+ *         description: Agent created successfully
+ *       '400':
+ *         description: Invalid request body
+ *       '500':
+ *         description: Internal server error
+ * 
  */

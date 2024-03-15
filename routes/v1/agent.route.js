@@ -7,10 +7,13 @@ const agentController = require('../../controllers/agent.controller');
 const router = express.Router();
 
 router
-.route('/')
-  .post(auth(), validate(agentValidation.createAgent), agentController.createAgent)
-  .get(auth(), validate(agentValidation.getAllAgent), agentController.getAllAgents);
+  .route('/')
+    .post(auth(), validate(agentValidation.createAgent), agentController.createAgent)
+    .get( agentController.getAllAgents);
 
-
+router
+  .route('/:id')
+    .patch(auth(), agentController.updateAgent)
+    .get(auth(), agentController.getAgent);
 
 module.exports = router;

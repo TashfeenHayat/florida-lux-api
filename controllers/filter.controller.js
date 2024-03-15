@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const catchAsync = require('../utils/catchAsync');
-const { Agent } = require('../models');
+const { Filter } = require('../models');
 
-const createAgent = catchAsync(async (req, res) => {
+const createFilter = catchAsync(async (req, res) => {
   const { name, description, phoneNumber, reference, photo, address } = req.body;
 
   const { permissions } = req.user.roleId
@@ -11,23 +11,23 @@ const createAgent = catchAsync(async (req, res) => {
 
   if (all) {
   
-    await Agent.create({ 
+    await Filter.create({ 
         name, description, phoneNumber, reference, photo, address
     });
     
-    return res.status(200).send('Agent created successfully');
+    return res.status(200).send('Filter created successfully');
     
   } else { 
-    return res.status(403).send('Forbiden! You are not allowed to create an agent');
+    return res.status(403).send('Forbiden! You are not allowed to create an Filter');
   }
 });
 
-const getAgent = catchAsync(async (req, res) => {
-  const agent = await Agent.findById(req.params.id);
-  return res.status(200).send(agent)
+const getFilter = catchAsync(async (req, res) => {
+  const filter = await Filter.findById(req.params.id);
+  return res.status(200).send(filter)
 });
 
-const updateAgent = catchAsync(async (req, res) => {
+const updateFilter = catchAsync(async (req, res) => {
 
   const { permissions } = req.user.roleId
   const all = permissions.find(i => i.module === 'all');
@@ -36,19 +36,20 @@ const updateAgent = catchAsync(async (req, res) => {
     // const id = mongoose.Types.ObjectId(req.body.id);
     // const isValid = mongoose.Types.ObjectId.isValid(id);
 
-    await Agent.findByIdAndUpdate(req.body.id, req.body);
+    await Filter.findByIdAndUpdate(req.body.id, req.body);
     
-    return res.status(200).send('Agent updated successfully');
+    return res.status(200).send('Filter updated successfully');
     
   } else { 
-    return res.status(403).send('Forbiden! You are not allowed to create an agent');
+    return res.status(403).send('Forbiden! You are not allowed to create an Filter');
   }
 });
 
-const getAllAgents = catchAsync(async (req, res) => {
+const getAllFilters = catchAsync(async (req, res) => {
     
     try {
-      const { key } = req.query;
+      const { key } = req.params;
+      
       const query = {};
 
     // Add search filters to the query object
@@ -56,13 +57,13 @@ const getAllAgents = catchAsync(async (req, res) => {
       query.name = { $regex: key, $options: 'i' }; // Case-insensitive regex search for name
 
       // If key is provided
-      const allAgents = await Agent.find(query);
-      return res.status(200).json(allAgents);
+      const allFilters = await Filter.find(query);
+      return res.status(200).json(allFilters);
     }
       
       // If no key is provided, return all agents
-      const allAgents = await Agent.find();
-      return res.status(200).json(allAgents);
+      const allFilters = await Filter.find(query);
+      return res.status(200).json(allFilters);
     } catch (error) {
       // Handle errors
       console.error(error);
@@ -71,8 +72,8 @@ const getAllAgents = catchAsync(async (req, res) => {
 });
 
 module.exports = {
-    createAgent,
-    getAgent,
-    updateAgent,
-    getAllAgents,
+    createFilter,
+    getFilter,
+    updateFilter,
+    getAllFilters,
 };

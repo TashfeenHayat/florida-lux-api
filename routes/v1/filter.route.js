@@ -1,16 +1,19 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
-const roleValidation = require('../../validations/role.validation');
-const roleController = require('../../controllers/role.controller');
+const agentValidation = require('../../validations/agent.validation');
+const filterController = require('../../controllers/filter.controller');
 
 const router = express.Router();
 
 router
-.route('/')
-  .post(validate(roleValidation.createRole), auth(), roleController.createRole)
-  .get(auth(), roleController.getRoles);
+  .route('/:key?')
+    .post(auth(), validate(agentValidation.createAgent), filterController.createFilter)
+    .get( filterController.getAllFilters);
 
-
+router
+  .route('/:id')
+    .patch(auth(), filterController.updateFilter)
+    .get(auth(), filterController.getFilter);
 
 module.exports = router;
