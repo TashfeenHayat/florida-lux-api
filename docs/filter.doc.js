@@ -23,7 +23,7 @@
  *           description: The URL of the filter's photo.
  *
  * paths:
- *   /v1/filters:
+ *   /v1/filter:
  *     post:
  *       summary: Create a new filter.
  *       tags:
@@ -46,9 +46,15 @@
  *         '500':
  *           description: Internal server error.
  * 
- *   /v1/filters/{key}:
  *     get:
- *       summary: Retrieve all filters.
+ *       summary: Retrieve filters based on a provided key or return all agents if no key is given.
+ *       parameters:
+ *         - in: query
+ *           name: key
+ *           schema:
+ *             type: string
+ *           description: Optional. The key to search for agents.
+
  *       tags:
  *         - Filters
  *       responses:
@@ -63,7 +69,7 @@
  *         '500':
  *           description: Internal server error.
  *
- *   /v1/filters/{id}:
+ *   /v1/filter/{id}:
  *     get:
  *       summary: Retrieve a filter by ID.
  *       tags:

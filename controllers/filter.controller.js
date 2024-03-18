@@ -4,16 +4,14 @@ const catchAsync = require('../utils/catchAsync');
 const { Filter } = require('../models');
 
 const createFilter = catchAsync(async (req, res) => {
-  const { name, description, phoneNumber, reference, photo, address } = req.body;
+  const { name, code, description, photo } = req.body;
 
   const { permissions } = req.user.roleId
   const all = permissions.find(i => i.module === 'all');
 
   if (all) {
   
-    await Filter.create({ 
-        name, description, phoneNumber, reference, photo, address
-    });
+    await Filter.create({  name, code, description, photo });
     
     return res.status(200).send('Filter created successfully');
     
@@ -23,8 +21,15 @@ const createFilter = catchAsync(async (req, res) => {
 });
 
 const getFilter = catchAsync(async (req, res) => {
-  const filter = await Filter.findById(req.params.id);
-  return res.status(200).send(filter)
+  try {
+
+    const filter = await Filter.findById(req.params.id);
+    return res.status(200).send(filter)
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    return res.status(404).json('No filter foud');
+  }
 });
 
 const updateFilter = catchAsync(async (req, res) => {
@@ -33,8 +38,6 @@ const updateFilter = catchAsync(async (req, res) => {
   const all = permissions.find(i => i.module === 'all');
 
   if (all) {
-    // const id = mongoose.Types.ObjectId(req.body.id);
-    // const isValid = mongoose.Types.ObjectId.isValid(id);
 
     await Filter.findByIdAndUpdate(req.body.id, req.body);
     
@@ -48,10 +51,9 @@ const updateFilter = catchAsync(async (req, res) => {
 const getAllFilters = catchAsync(async (req, res) => {
     
     try {
-      const { key } = req.params;
+      const { key } = req.query;
       
       const query = {};
-
     // Add search filters to the query object
     if (key) {
       query.name = { $regex: key, $options: 'i' }; // Case-insensitive regex search for name
@@ -67,7 +69,7 @@ const getAllFilters = catchAsync(async (req, res) => {
     } catch (error) {
       // Handle errors
       console.error(error);
-      return res.status(500).json({ error: 'Internal server error' });
+      return res.status(500).json('Internal server error');
     }
 });
 
