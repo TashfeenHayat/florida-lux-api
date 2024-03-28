@@ -114,6 +114,8 @@
  *     description: Create a new property listing.
  *     security:
  *       - AccessToken: []
+ *     tags:
+ *       - Property
  *     requestBody:
  *       required: true
  *       content:
@@ -132,6 +134,8 @@
  *   get:
  *     summary: Get loggedin Property profile
  *     description: Retrieve the profile information of the authenticated Property.
+ *     tags:
+ *       - Property
  *     responses:
  *       '200':
  *         description: Successfully registered.
@@ -139,4 +143,53 @@
  *         description: Bad request.
  *       '500':
  *         description: Internal server error.
+ * 
+ * /v1/property/{id}:
+ *   get:
+ *     summary: Get property by ID
+ *     description: Retrieve an property by its ID.
+ *     security: 
+ *       - bearerAuth: []
+ *     tags:
+ *       - Property
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID of the agent to retrieve
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Property'
+ *       '404':
+ *         description: Property not found
+ *       '500':
+ *         description: Internal server error
+ * 
+ *   patch:
+ *     summary: Update a property
+ *     description: Update a property.
+ *     security: 
+ *       - bearerAuth: []
+ *     tags:
+ *       - Property
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Property'
+ *     responses:
+ *       '201':
+ *         description: Property created successfully
+ *       '400':
+ *         description: Invalid request body
+ *       '500':
+ *         description: Internal server error
+ * 
  */
