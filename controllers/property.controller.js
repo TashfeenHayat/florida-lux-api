@@ -1,7 +1,5 @@
-const mongoose = require('mongoose');
-
 const catchAsync = require('../utils/catchAsync');
-const { Agent, Property } = require('../models');
+const { Agent, Filter, Property } = require('../models');
 
 const createProperty = catchAsync(async (req, res) => {
 
@@ -9,11 +7,22 @@ const createProperty = catchAsync(async (req, res) => {
   const all = permissions.find(i => i.module === 'all');
 
   if (all) {
-  
-    await Property.create(req.body);
-    
-    return res.status(200).send('Property created successfully');
-    
+
+    const agent = await Agent.findById(req.body.agentId);
+
+    if (agent) {
+
+        const filters = await Filter.find({ '_id': { $in: req.body.filters } })
+
+        if (filters.length > 0) {
+            await Property.create(req.body);
+            return res.status(200).send('Property created successfully');
+        } else {
+            return res.status(404).send('Filters not found');
+        }
+    } else {
+        return res.status(404).send('Agent not found');
+    }
   } else { 
     return res.status(403).send('Forbiden! You are not allowed to create a property');
   }

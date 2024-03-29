@@ -9,11 +9,11 @@ const router = express.Router();
 router
 .route('/')
   .post(auth(), validate(propertyValidation.createProperty), propertyController.createProperty)
-  .get(auth(), propertyController.getProperties);
+  .get(propertyController.getProperties);
 
 router
   .route('/:id')
     .patch(auth(), propertyController.updateProperty)
-    .get(auth(), propertyController.getProperty);
+    .get(propertyController.getProperty);
 
 module.exports = router;

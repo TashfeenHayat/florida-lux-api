@@ -22,7 +22,7 @@ const createProperty = {
     latitude: Joi.string(),
     area: Joi.string(),
     areaUnit: Joi.string(),
-    leasePeroid: Joi.string(),
+    leasePeriod: Joi.string().required(),
     salePrice: Joi.string(),
     reducedPrice: Joi.string(),
     currency: Joi.string(),
@@ -32,7 +32,7 @@ const createProperty = {
     tags: Joi.array().items(Joi.string()),
     reference: Joi.string(),
     agentId: Joi.string().regex(/^[0-9a-fA-F]{24}$/), // Assuming agentId is a valid MongoDB ObjectId
-    filters: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)) // Assuming filterIds are valid MongoDB ObjectIds
+    filters: Joi.array().items(Joi.string()) // Assuming filterIds are valid MongoDB ObjectIds
   
   }),
 };

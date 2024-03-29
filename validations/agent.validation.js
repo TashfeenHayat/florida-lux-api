@@ -2,7 +2,6 @@ const Joi = require('joi');
 
 const createAgent = {
   body: Joi.object().keys({
-    id: Joi.any().required(),
     name: Joi.string().trim().required(),
     code: Joi.string(),
     phoneNumber: Joi.string(),

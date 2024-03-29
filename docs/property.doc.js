@@ -112,8 +112,8 @@
  *   post:
  *     summary: Create a new property
  *     description: Create a new property listing.
- *     security:
- *       - AccessToken: []
+ *     security: 
+ *       - bearerAuth: []
  *     tags:
  *       - Property
  *     requestBody:
@@ -134,6 +134,12 @@
  *   get:
  *     summary: Get loggedin Property profile
  *     description: Retrieve the profile information of the authenticated Property.
+ *     parameters:
+ *       - in: query
+ *         name: key
+ *         schema:
+ *           type: string
+ *         description: Optional. The key to search for properties.
  *     tags:
  *       - Property
  *     responses:
