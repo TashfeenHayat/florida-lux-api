@@ -4,3 +4,4 @@ module.exports.Token = require('./token.model');
 module.exports.Agent = require('./agent.model');
 module.exports.Filter = require('./filter.model');
 module.exports.Property = require('./property.model');
+module.exports.Inquiry = require('./inquiry.model');

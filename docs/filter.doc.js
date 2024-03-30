@@ -5,9 +5,6 @@
  *     Filter:
  *       type: object
  *       properties:
- *         _id:
- *           type: string
- *           description: The unique identifier of the filter.
  *         name:
  *           type: string
  *           trim: true

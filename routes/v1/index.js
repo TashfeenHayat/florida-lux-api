@@ -7,6 +7,7 @@ const filterRoute = require('./filter.route');
 const propertyRoute = require('./property.route');
 const docsRoute = require('./docs.route');
 const uploadRoute = require('./upload.route');
+const inquiryRoute = require('./inquiry.route');
 
 const router = express.Router();
 
@@ -38,6 +39,10 @@ const defaultRoutes = [
   {
     path: '/upload',
     route: uploadRoute,
+  },
+  {
+    path: '/inquiry',
+    route: inquiryRoute,
   },
 ];
 

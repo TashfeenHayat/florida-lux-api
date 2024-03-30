@@ -6,13 +6,8 @@
  *     User:
  *       type: object
  *       required:
- *         - id
  *         - username
  *       properties:
- *         id:
- *           type: integer
- *           format: int64
- *           description: The user ID
  *         username:
  *           type: string
  *           description: The username
