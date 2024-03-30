@@ -39,7 +39,7 @@ const updateFilter = catchAsync(async (req, res) => {
 
   if (all) {
 
-    await Filter.findByIdAndUpdate(req.body.id, req.body);
+    await Filter.findByIdAndUpdate(req.params.id, req.body);
     
     return res.status(200).send('Filter updated successfully');
     

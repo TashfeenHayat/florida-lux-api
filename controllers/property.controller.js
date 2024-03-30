@@ -12,16 +12,16 @@ const createProperty = catchAsync(async (req, res) => {
 
     if (agent) {
 
-        const filters = await Filter.find({ '_id': { $in: req.body.filters } })
+      const filters = await Filter.find({ '_id': { $in: req.body.filters } });
 
-        if (filters.length > 0) {
-            await Property.create(req.body);
-            return res.status(200).send('Property created successfully');
-        } else {
-            return res.status(404).send('Filters not found');
-        }
+      if (filters.length > 0) {
+        await Property.create(req.body);
+        return res.status(200).send('Property created successfully');
+      } else {
+        return res.status(404).send('Filters not found');
+      }
     } else {
-        return res.status(404).send('Agent not found');
+      return res.status(404).send('Agent not found');
     }
   } else { 
     return res.status(403).send('Forbiden! You are not allowed to create a property');
@@ -39,12 +39,24 @@ const updateProperty = catchAsync(async (req, res) => {
   const all = permissions.find(i => i.module === 'all');
 
   if (all) {
-    // const id = mongoose.Types.ObjectId(req.body.id);
-    // const isValid = mongoose.Types.ObjectId.isValid(id);
-
-    await Property.findByIdAndUpdate(req.body.id, req.body);
     
-    return res.status(200).send('Agent updated successfully');
+    if (req.body.agentId) {
+      const agent = await Agent.findById(req.body.agentId);
+      if (!agent) {
+        return res.status(404).send('Agent not found');
+      }
+    }
+
+    if (req.body.filters && req.body.filters.length > 0) {
+      const filters = await Filter.find({ '_id': { $in: req.body.filters } });
+      if (filters.length === 0) {
+        return res.status(404).send('Filters not found');
+      }
+    }
+
+    await Property.findByIdAndUpdate(req.params.id, req.body);
+    
+    return res.status(200).send('Property updated successfully');
     
   } else { 
     return res.status(403).send('Forbiden! You are not allowed to create a property');

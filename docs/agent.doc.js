@@ -137,6 +137,13 @@
  *       - bearerAuth: []
  *     tags:
  *       - Agents
+ *     parameters:
+ *         - in: path
+ *           name: id
+ *           schema:
+ *             type: string
+ *           required: true
+ *           description: The ID of the filter to update.
  *     requestBody:
  *       required: true
  *       content:

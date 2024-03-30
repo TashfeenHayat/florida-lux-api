@@ -13,7 +13,7 @@ router
 
 router
   .route('/:id')
-    .patch(auth(), propertyController.updateProperty)
+    .patch(auth(), validate(propertyValidation.updateProperty), propertyController.updateProperty)
     .get(propertyController.getProperty);
 
 module.exports = router;
