@@ -120,4 +120,25 @@
  *           description: Filter not found.
  *         '500':
  *           description: Internal server error.
+ * 
+ *     delete:
+ *       summary: Delete a filter by ID.
+ *       tags:
+ *         - Filters
+ *       parameters:
+ *         - in: path
+ *           name: id
+ *           schema:
+ *             type: string
+ *           required: true
+ *           description: The ID of the filter to delete.
+ *       responses:
+ *         '200':
+ *           description: Successfully deleted the filter.
+ *         '400':
+ *           description: Bad request. Invalid input data.
+ *         '404':
+ *           description: Filter not found.
+ *         '500':
+ *           description: Internal server error.
  */

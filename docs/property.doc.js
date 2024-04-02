@@ -205,4 +205,26 @@
  *       '500':
  *         description: Internal server error
  * 
+ *   delete:
+ *     summary: Delete property by ID
+ *     description: Delete an property by its ID.
+ *     security: 
+ *       - bearerAuth: []
+ *     tags:
+ *       - Property
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID of the property to delete
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '204':
+ *         description: Property deleted successfully
+ *       '404':
+ *         description: Property not found
+ *       '500':
+ *         description: Internal server error
+ * 
  */

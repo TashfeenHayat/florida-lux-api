@@ -14,6 +14,7 @@ router
 router
   .route('/:id')
     .patch(auth(), agentController.updateAgent)
-    .get(auth(), agentController.getAgent);
+    .get(auth(), agentController.getAgent)
+    .delete(auth(), agentController.deleteAgent);
 
 module.exports = router;

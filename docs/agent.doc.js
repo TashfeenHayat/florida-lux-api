@@ -158,4 +158,27 @@
  *       '500':
  *         description: Internal server error
  * 
+ *   delete:
+ *     summary: Delete agent by ID
+ *     description: Delete an agent by its ID.
+ *     security: 
+ *       - bearerAuth: []
+ *     tags:
+ *       - Agents
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID of the agent to delete
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '204':
+ *         description: Agent deleted successfully
+ *       '404':
+ *         description: Agent not found
+ *       '500':
+ *         description: Internal server error
+
+ * 
  */

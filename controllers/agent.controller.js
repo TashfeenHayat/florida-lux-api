@@ -33,13 +33,30 @@ const updateAgent = catchAsync(async (req, res) => {
   const all = permissions.find(i => i.module === 'all');
 
   if (all) {
-    // const id = mongoose.Types.ObjectId(req.body.id);
-    // const isValid = mongoose.Types.ObjectId.isValid(id);
 
-    await Agent.findByIdAndUpdate(req.body.id, req.body);
+    await Agent.findByIdAndUpdate(req.params.id, req.body);
     
     return res.status(200).send('Agent updated successfully');
     
+  } else { 
+    return res.status(403).send('Forbiden! You are not allowed to create an agent');
+  }
+});
+
+const deleteAgent = catchAsync(async (req, res) => {
+
+  const { permissions } = req.user.roleId
+  const all = permissions.find(i => i.module === 'all');
+
+  if (all) {
+  
+    const agent = await Agent.deleteOne({ _id: req.params.id });
+    console.log(agent)
+    if (agent.deletedCount > 0) {
+      return res.status(200).send('Agent deleted successfully');
+    } else {
+      return res.status(404).send('Agent not found');
+    }
   } else { 
     return res.status(403).send('Forbiden! You are not allowed to create an agent');
   }
@@ -74,5 +91,6 @@ module.exports = {
     createAgent,
     getAgent,
     updateAgent,
+    deleteAgent,
     getAllAgents,
 };

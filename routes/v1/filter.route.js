@@ -14,6 +14,7 @@ router
 router
   .route('/:id')
     .patch(auth(), filterController.updateFilter)
-    .get(filterController.getFilter);
+    .get(filterController.getFilter)
+    .delete(filterController.deleteFilter);
 
 module.exports = router;
