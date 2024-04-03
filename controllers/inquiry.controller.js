@@ -48,6 +48,6 @@ const getInquiries = catchAsync(async (req, res) => {
 
 module.exports = {
     createInquiry,
-    getInquiries,
+    getInquiry,
     getInquiries,
 };

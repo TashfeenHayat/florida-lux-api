@@ -4,16 +4,13 @@ const catchAsync = require('../utils/catchAsync');
 const { Agent } = require('../models');
 
 const createAgent = catchAsync(async (req, res) => {
-  const { name, description, phoneNumber, reference, photo, address } = req.body;
 
   const { permissions } = req.user.roleId
   const all = permissions.find(i => i.module === 'all');
 
   if (all) {
   
-    await Agent.create({ 
-        name, description, phoneNumber, reference, photo, address
-    });
+    await Agent.create(req.body);
     
     return res.status(200).send('Agent created successfully');
     

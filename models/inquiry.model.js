@@ -2,7 +2,11 @@ const mongoose = require('mongoose');
 
 const inquirySchema = new mongoose.Schema(
   {
-    name: {
+    firstName: {
+      type: String,
+      required: true
+    },
+    lastName: {
       type: String,
       required: true
     },
@@ -12,7 +16,6 @@ const inquirySchema = new mongoose.Schema(
     },
     message: {
       type: String,
-      required: true
     }
   },  
   {

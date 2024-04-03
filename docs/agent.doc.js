@@ -17,9 +17,15 @@
  *     Agent:
  *       type: object
  *       properties:
- *         name:
+ *         firstName:
  *           type: string
- *           description: The name of the item.
+ *           description: First name of the agent.
+ *         lastName:
+ *           type: string
+ *           description: Last name of the agent.
+ *         email:
+ *           type: string
+ *           description: Email of the agent.
  *         code:
  *           type: string
  *           description: The code of the item.

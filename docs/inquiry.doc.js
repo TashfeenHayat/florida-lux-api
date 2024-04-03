@@ -5,7 +5,10 @@
  *     Inquiry:
  *       type: object
  *       properties:
- *         name:
+ *         firstName:
+ *           type: string
+ *           description: User's name
+ *         lastName:
  *           type: string
  *           description: User's name
  *         email:

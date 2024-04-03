@@ -2,7 +2,17 @@ const mongoose = require('mongoose');
 
 const agentSchema = mongoose.Schema(
   {
-    name: {
+    firstName: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    lastName: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    email: {
       type: String,
       trim: true,
       required: true,
