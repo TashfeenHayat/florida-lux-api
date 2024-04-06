@@ -106,7 +106,7 @@
 
 /**
  * @swagger
- * /upload:
+ * /v1/upload:
  *   post:
  *     summary: Uploads a file to Firebase Storage and makes it publicly accessible.
  *     consumes:

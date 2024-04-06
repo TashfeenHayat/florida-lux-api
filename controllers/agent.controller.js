@@ -63,12 +63,17 @@ const getAllAgents = catchAsync(async (req, res) => {
     
     try {
       const { key } = req.query;
-      const query = {};
+      let query = {};
 
     // Add search filters to the query object
     if (key) {
-      query.name = { $regex: key, $options: 'i' }; // Case-insensitive regex search for name
-
+      // query.firstName = { $regex: key, $options: 'i' }; // Case-insensitive regex search for name
+      query = { 
+        $or:[
+          { firstName: { $regex: key, $options: 'i'  }},
+          { lastName: { $regex: key, $options: 'i'  }},
+          { email: { $regex: key, $options: 'i'  }},
+      ]}
       // If key is provided
       const allAgents = await Agent.find(query);
       return res.status(200).json(allAgents);
