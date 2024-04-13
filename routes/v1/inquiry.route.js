@@ -11,4 +11,8 @@ router
     .post(validate(inquiryValidation.createInquiry), inquiryController.createInquiry)
     .get(auth(), inquiryController.getInquiries);
 
+router
+  .route('/:id')
+    .get(auth(), inquiryController.getInquiry)
+
 module.exports = router;

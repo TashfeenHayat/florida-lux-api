@@ -130,7 +130,6 @@
  *       '500':
  *         description: Internal server error 
  * 
- * 
  *   get:
  *     summary: Get loggedin Property profile
  *     description: Retrieve the profile information of the authenticated Property.
@@ -140,6 +139,16 @@
  *         schema:
  *           type: string
  *         description: Optional. The key to search for properties.
+ *       - in: query
+ *         name: agentId
+ *         schema:
+ *           type: string
+ *         description: Optional. The agentId to search for properties.
+ *       - in: query
+ *         name: filterId
+ *         schema:
+ *           type: string
+ *         description: Optional. The filterId to search for properties.
  *     tags:
  *       - Property
  *     responses:
@@ -226,5 +235,7 @@
  *         description: Property not found
  *       '500':
  *         description: Internal server error
+ * 
+ * 
  * 
  */

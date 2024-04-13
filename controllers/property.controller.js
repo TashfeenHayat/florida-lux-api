@@ -29,7 +29,12 @@ const createProperty = catchAsync(async (req, res) => {
 });
 
 const getProperty = catchAsync(async (req, res) => {
-  const property = await Property.findById(req.params.id);
+  const property = await Property.findById(req.params.id)
+  .populate({
+    path: 'agentId',
+  }).populate({
+    path: 'filters'
+  }).exec();
   return res.status(200).send(property);
 });
 
@@ -64,28 +69,35 @@ const updateProperty = catchAsync(async (req, res) => {
 });
 
 const getProperties = catchAsync(async (req, res) => {
-    
-    try {
-      const { key } = req.query;
-      const query = {};
-
+  
+  try {
+    const { key, agentId, filterId } = req.query;
+    const query = {};
+  
     // Add search filters to the query object
     if (key) {
-      query.name = { $regex: key, $options: 'i' }; // Case-insensitive regex search for name
-
-      // If key is provided
-      const allproperties = await Property.find(query);
-      return res.status(200).json(allproperties);
+      query.$or = [
+        { name: { $regex: key, $options: 'i' } },
+      ];
     }
-      
-      // If no key is provided, return all properties
-      const allproperties = await Property.find();
-      return res.status(200).json(allproperties);
-    } catch (error) {
-      // Handle errors
-      console.error(error);
-      return res.status(500).json({ error: 'Internal server error' });
+  
+    if (agentId) {
+      query.agentId = agentId;
     }
+  
+    if (filterId) {
+      query.filters = { $in: [filterId] };
+    }
+  
+    // If key or other query parameters are provided
+    const allproperties = await Property.find(query).exec();
+    return res.status(200).json(allproperties);
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+  
 });
 
 module.exports = {

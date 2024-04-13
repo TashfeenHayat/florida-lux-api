@@ -48,7 +48,7 @@ const deleteAgent = catchAsync(async (req, res) => {
   if (all) {
   
     const agent = await Agent.deleteOne({ _id: req.params.id });
-    console.log(agent)
+
     if (agent.deletedCount > 0) {
       return res.status(200).send('Agent deleted successfully');
     } else {
@@ -60,14 +60,13 @@ const deleteAgent = catchAsync(async (req, res) => {
 });
 
 const getAllAgents = catchAsync(async (req, res) => {
-    
     try {
-      const { key } = req.query;
+      const { key,  page = 1, limit = 10 } = req.query;
       let query = {};
 
     // Add search filters to the query object
     if (key) {
-      // query.firstName = { $regex: key, $options: 'i' }; // Case-insensitive regex search for name
+      // Case-insensitive regex search for name
       query = { 
         $or:[
           { firstName: { $regex: key, $options: 'i'  }},
@@ -75,12 +74,14 @@ const getAllAgents = catchAsync(async (req, res) => {
           { email: { $regex: key, $options: 'i'  }},
       ]}
       // If key is provided
-      const allAgents = await Agent.find(query);
+      const allAgents = await Agent.find(query, { skip, limit }).limit(limit * 1)
+      .skip((page - 1) * limit);
       return res.status(200).json(allAgents);
     }
       
       // If no key is provided, return all agents
-      const allAgents = await Agent.find();
+      const allAgents = await Agent.find().limit(limit * 1)
+      .skip((page - 1) * limit);
       return res.status(200).json(allAgents);
     } catch (error) {
       // Handle errors
