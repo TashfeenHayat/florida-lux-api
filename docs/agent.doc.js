@@ -92,9 +92,19 @@
  *     parameters:
  *       - in: query
  *         name: key
+ *         description: Search key to filter agents by first name, last name, or email.
  *         schema:
  *           type: string
- *         description: Optional. The key to search for agents.
+ *       - in: query
+ *         name: limit
+ *         description: The number of agents to return per page.
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: page
+ *         description: The page number of results to return.
+ *         schema:
+ *           type: integer
  *     tags:
  *       - Agents
  *     responses:
