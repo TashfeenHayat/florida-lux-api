@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const Schema = mongoose.Schema;
+
 const inquirySchema = new mongoose.Schema(
   {
     firstName: {
@@ -10,9 +12,18 @@ const inquirySchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    phoneNumber: {
+      type: String,
+    },
     email: {
       type: String,
-      required: true
+    },
+    propertyId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Property'
+    },
+    requestVisit: {
+        type: Boolean
     },
     message: {
       type: String,

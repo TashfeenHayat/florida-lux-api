@@ -12,7 +12,12 @@ const createInquiry = catchAsync(async (req, res) => {
 const getInquiry = catchAsync(async (req, res) => {
   try {
 
-    const inquiry = await Inquiry.findById(req.params.id);
+    const inquiry = await Inquiry.findById(req.params.id)
+      .populate({
+        path: 'propertyId',
+      })
+      .exec();
+
     return res.status(200).send(inquiry)
   } catch (error) {
     // Handle errors

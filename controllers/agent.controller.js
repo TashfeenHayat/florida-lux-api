@@ -44,7 +44,7 @@ const deleteAgent = catchAsync(async (req, res) => {
 
   if (all) {
     const agent = await Agent.deleteOne({ _id: req.params.id });
-    console.log(agent);
+
     if (agent.deletedCount > 0) {
       return res.status(200).send("Agent deleted successfully");
     } else {
