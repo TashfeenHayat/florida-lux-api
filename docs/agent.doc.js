@@ -51,9 +51,25 @@
  *             country:
  *               type: string
  *               description: The country of the address.
- *             zipCode:
+ *         social:
+ *           type: object
+ *           description: The social links of the agent.
+ *           properties:
+ *             facebook:
  *               type: string
- *               description: The ZIP code of the address.
+ *               description: Facebook profile URL
+ *             insta:
+ *               type: string
+ *               description: Instagram profile URL
+ *             linkedin:
+ *               type: string
+ *               description: Linkedin profile URL
+ *             twitter:
+ *               type: string
+ *               description: Twitter profile URL
+ *             other:
+ *               type: string
+ *               description: Any other profile URL
  *         description:
  *           type: string
  *           description: The description of the item.

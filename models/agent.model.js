@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const agentSchema = mongoose.Schema(
   {
@@ -28,29 +28,46 @@ const agentSchema = mongoose.Schema(
         type: String,
       },
       addressLine2: {
-          type: String,
-        },
+        type: String,
+      },
       state: {
-          type: String,
-        },
+        type: String,
+      },
       city: {
-          type: String,
-        },
+        type: String,
+      },
       country: {
-          type: String,
-        },
+        type: String,
+      },
       zipCode: {
-          type: String,
+        type: String,
       },
     },
     description: {
-        type: String,
+      type: String,
     },
     reference: {
-        type: String,
+      type: String,
     },
     photo: {
       type: String,
+    },
+    social: {
+      facebook: {
+        type: String,
+      },
+      insta: {
+        type: String,
+      },
+      linkedin: {
+        type: String,
+      },
+      twitter: {
+        type: String,
+      },
+      other: {
+        type: String,
+      },
     },
   },
   {
@@ -61,6 +78,6 @@ const agentSchema = mongoose.Schema(
 /**
  * @typedef Agent
  */
-const Agent = mongoose.model('Agent', agentSchema);
+const Agent = mongoose.model("Agent", agentSchema);
 
 module.exports = Agent;
