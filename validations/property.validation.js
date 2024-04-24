@@ -1,16 +1,20 @@
-const Joi = require('joi');
+const Joi = require("joi");
 
 const createProperty = {
   body: Joi.object().keys({
     name: Joi.string().trim().required(),
     code: Joi.string(),
     description: Joi.string(),
-    status: Joi.string().valid('for_sale', 'sold', 'incoming', 'for_rent').default('incoming'),
-    media: Joi.array().items(Joi.object({
-      smUrl: Joi.string(),
-      mdUrl: Joi.string(),
-      xlUrl: Joi.string()
-    })),
+    status: Joi.string()
+      .valid("for_sale", "sold", "incoming", "for_rent")
+      .default("incoming"),
+    media: Joi.array().items(
+      Joi.object({
+        smUrl: Joi.string(),
+        mdUrl: Joi.string(),
+        xlUrl: Joi.string(),
+      })
+    ),
     neighborhood: Joi.string(),
     addressLine1: Joi.string(),
     addressLine2: Joi.string(),
@@ -31,9 +35,9 @@ const createProperty = {
     bathCount: Joi.string(),
     tags: Joi.array().items(Joi.string()),
     reference: Joi.string(),
+    mlsId: Joi.string(),
     agentId: Joi.string().regex(/^[0-9a-fA-F]{24}$/), // Assuming agentId is a valid MongoDB ObjectId
-    filters: Joi.array().items(Joi.string()) // Assuming filterIds are valid MongoDB ObjectIds
-  
+    filters: Joi.array().items(Joi.string()), // Assuming filterIds are valid MongoDB ObjectIds
   }),
 };
 
@@ -42,12 +46,16 @@ const updateProperty = {
     name: Joi.string(),
     code: Joi.string(),
     description: Joi.string(),
-    status: Joi.string().valid('for_sale', 'sold', 'incoming', 'for_rent').default('incoming'),
-    media: Joi.array().items(Joi.object({
-      smUrl: Joi.string(),
-      mdUrl: Joi.string(),
-      xlUrl: Joi.string()
-    })),
+    status: Joi.string()
+      .valid("for_sale", "sold", "incoming", "for_rent")
+      .default("incoming"),
+    media: Joi.array().items(
+      Joi.object({
+        smUrl: Joi.string(),
+        mdUrl: Joi.string(),
+        xlUrl: Joi.string(),
+      })
+    ),
     neighborhood: Joi.string(),
     addressLine1: Joi.string(),
     addressLine2: Joi.string(),
@@ -69,8 +77,7 @@ const updateProperty = {
     tags: Joi.array().items(Joi.string()),
     reference: Joi.string(),
     agentId: Joi.string().regex(/^[0-9a-fA-F]{24}$/), // Assuming agentId is a valid MongoDB ObjectId
-    filters: Joi.array().items(Joi.string()) // Assuming filterIds are valid MongoDB ObjectIds
-  
+    filters: Joi.array().items(Joi.string()), // Assuming filterIds are valid MongoDB ObjectIds
   }),
 };
 
@@ -81,6 +88,6 @@ const getProperty = {
 };
 
 module.exports = {
-    createProperty,
-    updateProperty
+  createProperty,
+  updateProperty,
 };
