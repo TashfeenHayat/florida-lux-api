@@ -72,6 +72,7 @@ const getProperties = catchAsync(async (req, res) => {
   try {
     const {
       key,
+      status,
       agentId,
       filterId,
       bedroomCount,
@@ -96,6 +97,10 @@ const getProperties = catchAsync(async (req, res) => {
         { country: { $regex: key, $options: "i" } },
         { zipCode: { $regex: key, $options: "i" } },
       ];
+    }
+
+    if (status) {
+      query.status = status;
     }
 
     if (agentId) {

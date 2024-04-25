@@ -148,6 +148,11 @@
  *           type: string
  *         description: Optional. The agentId to search for properties.
  *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *         description: Optional. The status to search for properties. "for_sale", "sold", "incoming", "for_rent"
+ *       - in: query
  *         name: filterId
  *         schema:
  *           type: string
