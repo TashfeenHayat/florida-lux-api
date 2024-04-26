@@ -143,6 +143,16 @@
  *           type: string
  *         description: Optional. The key to search for properties.
  *       - in: query
+ *         name: limit
+ *         description: The number of properties to return per page.
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: page
+ *         description: The page number of results to return.
+ *         schema:
+ *           type: integer
+ *       - in: query
  *         name: agentId
  *         schema:
  *           type: string

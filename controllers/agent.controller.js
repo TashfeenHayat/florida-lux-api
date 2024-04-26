@@ -59,7 +59,7 @@ const deleteAgent = catchAsync(async (req, res) => {
 
 const getAllAgents = catchAsync(async (req, res) => {
   try {
-    const { key, limit = 2, page = 1 } = req.query;
+    const { key, limit = 10, page = 1 } = req.query;
     const skip = (parseInt(page) - 1) * parseInt(limit);
     let query = {};
 

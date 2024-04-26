@@ -72,6 +72,8 @@ const getProperties = catchAsync(async (req, res) => {
   try {
     const {
       key,
+      limit = 10,
+      page = 1,
       status,
       agentId,
       filterId,
@@ -83,6 +85,7 @@ const getProperties = catchAsync(async (req, res) => {
       maxArea,
     } = req.query;
     const query = {};
+    const skip = (parseInt(page) - 1) * parseInt(limit);
 
     // Add search filters to the query object
     if (key) {
@@ -127,9 +130,15 @@ const getProperties = catchAsync(async (req, res) => {
       query.area = { $gte: minArea, $lte: maxArea };
     }
 
+    // Find total count of properties
+    const totalCount = await Property.countDocuments(query);
+
     // If key or other query parameters are provided
-    const allproperties = await Property.find(query).exec();
-    return res.status(200).json(allproperties);
+    const properties = await Property.find(query)
+      .limit(parseInt(limit))
+      .skip(skip)
+      .sort({ createdAt: -1 });
+    return res.status(200).json({ properties, totalCount });
   } catch (error) {
     // Handle errors
     console.error(error);
