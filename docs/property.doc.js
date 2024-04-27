@@ -197,6 +197,11 @@
  *         schema:
  *           type: string
  *         description: Optional. The maxArea to search for properties.
+ *       - in: query
+ *         name: mlsOnly
+ *         schema:
+ *           type: boolean
+ *         description: Optional. Get properties only from MLS.
  *     tags:
  *       - Property
  *     responses:

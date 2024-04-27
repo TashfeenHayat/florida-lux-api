@@ -1,5 +1,6 @@
 const catchAsync = require("../utils/catchAsync");
 const { Agent, Filter, Property } = require("../models");
+const mlsApi = "https://api.simplyrets.com/";
 
 const createProperty = catchAsync(async (req, res) => {
   const { permissions } = req.user.roleId;
@@ -83,6 +84,7 @@ const getProperties = catchAsync(async (req, res) => {
       maxPrice,
       minArea,
       maxArea,
+      mlsOnly,
     } = req.query;
     const query = {};
     const skip = (parseInt(page) - 1) * parseInt(limit);
@@ -128,6 +130,14 @@ const getProperties = catchAsync(async (req, res) => {
 
     if (minArea || maxArea) {
       query.area = { $gte: minArea, $lte: maxArea };
+    }
+
+    if (mlsOnly) {
+      fetch(mlsApi + "properties", {})
+        .then((response) => response.json())
+        .then((data) => console.log(data))
+        .catch((error) => error);
+      // return res.status(200).json(properties);
     }
 
     // Find total count of properties
