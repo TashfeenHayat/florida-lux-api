@@ -1,6 +1,17 @@
+const request = require("request");
 const catchAsync = require("../utils/catchAsync");
 const { Agent, Filter, Property } = require("../models");
 const mlsApi = "https://api.simplyrets.com/";
+const mlsKey = "Basic " + btoa("mweis_18f15548" + ":" + "3346216f22164a64");
+
+// Define the options for the request
+const options = {
+  url: mlsApi + "properties?status=Active",
+  headers: {
+    accept: "application/json",
+    Authorization: mlsKey,
+  },
+};
 
 const createProperty = catchAsync(async (req, res) => {
   const { permissions } = req.user.roleId;
@@ -103,7 +114,8 @@ const getProperties = catchAsync(async (req, res) => {
         { zipCode: { $regex: key, $options: "i" } },
       ];
     }
-
+    console.log(mlsApi + "properties?status=Active");
+    console.log("Basic " + btoa("mweis_18f15548" + ":" + "3346216f22164a64"));
     if (status) {
       query.status = status;
     }
@@ -133,11 +145,13 @@ const getProperties = catchAsync(async (req, res) => {
     }
 
     if (mlsOnly) {
-      fetch(mlsApi + "properties", {})
-        .then((response) => response.json())
-        .then((data) => console.log(data))
-        .catch((error) => error);
-      // return res.status(200).json(properties);
+      return request(options, (error, response) => {
+        if (error) throw new Error(error);
+
+        const properties = JSON.parse(response.body);
+
+        return res.status(200).json({ properties });
+      });
     }
 
     // Find total count of properties
