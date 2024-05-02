@@ -6,7 +6,7 @@ const mlsKey = "Basic " + btoa("mweis_18f15548" + ":" + "3346216f22164a64");
 
 // Define the options for the request
 const options = {
-  url: mlsApi + "properties?status=Active",
+  url: mlsApi + "properties?status=Active&count=true",
   headers: {
     accept: "application/json",
     Authorization: mlsKey,
@@ -114,8 +114,7 @@ const getProperties = catchAsync(async (req, res) => {
         { zipCode: { $regex: key, $options: "i" } },
       ];
     }
-    console.log(mlsApi + "properties?status=Active");
-    console.log("Basic " + btoa("mweis_18f15548" + ":" + "3346216f22164a64"));
+
     if (status) {
       query.status = status;
     }
@@ -145,6 +144,10 @@ const getProperties = catchAsync(async (req, res) => {
     }
 
     if (mlsOnly) {
+      if (key) {
+        options.qs = { q: key };
+      }
+
       return request(options, (error, response) => {
         if (error) throw new Error(error);
 
