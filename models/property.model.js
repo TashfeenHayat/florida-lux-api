@@ -87,6 +87,39 @@ const propertySchema = mongoose.Schema(
     bathCount: {
       type: String,
     },
+    yearBuilt: {
+      type: String,
+    },
+    foundation: {
+      type: String,
+    },
+    stories: {
+      type: String,
+    },
+    roof: {
+      type: String,
+    },
+    flooring: {
+      type: String,
+    },
+    cooling: {
+      type: String,
+    },
+    heating: {
+      type: String,
+    },
+    fireplace: {
+      type: String,
+    },
+    style: {
+      type: String,
+    },
+    pool: {
+      type: String,
+    },
+    parking: {
+      type: String,
+    },
     tags: {
       type: Array,
     },
