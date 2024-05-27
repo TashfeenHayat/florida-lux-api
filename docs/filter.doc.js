@@ -69,7 +69,7 @@
  *           description: Bad request. Invalid input data.
  *         '500':
  *           description: Internal server error.
- * 
+ *
  *     get:
  *       summary: Retrieve filters based on a provided key or return all agents if no key is given.
  *       parameters:
@@ -78,7 +78,16 @@
  *           schema:
  *             type: string
  *           description: Optional. The key to search for agents.
-
+ *         - in: query
+ *           name: limit
+ *           description: The number of agents to return per page.
+ *           schema:
+ *             type: integer
+ *         - in: query
+ *           name: page
+ *           description: The page number of results to return.
+ *           schema:
+ *             type: integer
  *       tags:
  *         - Filters
  *       responses:
@@ -147,7 +156,7 @@
  *           description: Filter not found.
  *         '500':
  *           description: Internal server error.
- * 
+ *
  *     delete:
  *       summary: Delete a filter by ID.
  *       tags:

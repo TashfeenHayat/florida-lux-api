@@ -1,6 +1,6 @@
 /**
  * @swagger
- * 
+ *
  * components:
  *   schemas:
  *     Property:
@@ -99,6 +99,9 @@
  *         reference:
  *           type: string
  *           description: The reference code of the property.
+ *         mlsId:
+ *           type: string
+ *           description: The reference id of the MLS System.
  *         agentId:
  *           type: string
  *           description: The ID of the agent associated with the property.
@@ -107,12 +110,12 @@
  *           items:
  *             type: string
  *           description: The IDs of filters associated with the property.
- * 
+ *
  * /v1/property:
  *   post:
  *     summary: Create a new property
  *     description: Create a new property listing.
- *     security: 
+ *     security:
  *       - bearerAuth: []
  *     tags:
  *       - Property
@@ -128,8 +131,8 @@
  *       '400':
  *         description: Invalid request body
  *       '500':
- *         description: Internal server error 
- * 
+ *         description: Internal server error
+ *
  *   get:
  *     summary: Get loggedin Property profile
  *     description: Retrieve the profile information of the authenticated Property.
@@ -140,15 +143,65 @@
  *           type: string
  *         description: Optional. The key to search for properties.
  *       - in: query
+ *         name: limit
+ *         description: The number of properties to return per page.
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: page
+ *         description: The page number of results to return.
+ *         schema:
+ *           type: integer
+ *       - in: query
  *         name: agentId
  *         schema:
  *           type: string
  *         description: Optional. The agentId to search for properties.
  *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *         description: Optional. The status to search for properties. "for_sale", "sold", "incoming", "for_rent"
+ *       - in: query
  *         name: filterId
  *         schema:
  *           type: string
  *         description: Optional. The filterId to search for properties.
+ *       - in: query
+ *         name: bedroomCount
+ *         schema:
+ *           type: string
+ *         description: Optional. The bedroomCount to search for properties.
+ *       - in: query
+ *         name: bathCount
+ *         schema:
+ *           type: string
+ *         description: Optional. The bathCount to search for properties.
+ *       - in: query
+ *         name: minPrice
+ *         schema:
+ *           type: string
+ *         description: Optional. The minPrice to search for properties.
+ *       - in: query
+ *         name: maxPrice
+ *         schema:
+ *           type: string
+ *         description: Optional. The maxPrice to search for properties.
+ *       - in: query
+ *         name: minArea
+ *         schema:
+ *           type: string
+ *         description: Optional. The minArea to search for properties.
+ *       - in: query
+ *         name: maxArea
+ *         schema:
+ *           type: string
+ *         description: Optional. The maxArea to search for properties.
+ *       - in: query
+ *         name: mlsOnly
+ *         schema:
+ *           type: boolean
+ *         description: Optional. Get properties only from MLS.
  *     tags:
  *       - Property
  *     responses:
@@ -158,12 +211,12 @@
  *         description: Bad request.
  *       '500':
  *         description: Internal server error.
- * 
+ *
  * /v1/property/{id}:
  *   get:
  *     summary: Get property by ID
  *     description: Retrieve an property by its ID.
- *     security: 
+ *     security:
  *       - bearerAuth: []
  *     tags:
  *       - Property
@@ -185,11 +238,11 @@
  *         description: Property not found
  *       '500':
  *         description: Internal server error
- * 
+ *
  *   patch:
  *     summary: Update a property
  *     description: Update a property.
- *     security: 
+ *     security:
  *       - bearerAuth: []
  *     tags:
  *       - Property
@@ -213,11 +266,11 @@
  *         description: Invalid request body
  *       '500':
  *         description: Internal server error
- * 
+ *
  *   delete:
  *     summary: Delete property by ID
  *     description: Delete an property by its ID.
- *     security: 
+ *     security:
  *       - bearerAuth: []
  *     tags:
  *       - Property
@@ -235,7 +288,7 @@
  *         description: Property not found
  *       '500':
  *         description: Internal server error
- * 
- * 
- * 
+ *
+ *
+ *
  */

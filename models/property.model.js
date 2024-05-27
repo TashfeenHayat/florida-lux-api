@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
@@ -13,92 +13,132 @@ const propertySchema = mongoose.Schema(
       type: String,
     },
     description: {
-        type: String,
+      type: String,
     },
     status: {
         type: String,
         defaultValue: 'incoming',
         enum: ['for_sale', 'sold', 'incoming', 'for_rent', 'featured'],
     },
-    media: [{
-      smUrl: {
-        type: String,
+    media: [
+      {
+        smUrl: {
+          type: String,
+        },
+        mdUrl: {
+          type: String,
+        },
+        xlUrl: {
+          type: String,
+        },
       },
-      mdUrl: {
-        type: String,
-      },
-      xlUrl: {
-        type: String,
-      },
-    }],
+    ],
     neighborhood: {
-        type: String,
+      type: String,
     },
     addressLine1: {
-        type: String,
+      type: String,
     },
     addressLine2: {
-        type: String,
-      },
+      type: String,
+    },
     state: {
-        type: String,
-      },
+      type: String,
+    },
     city: {
-        type: String,
-      },
+      type: String,
+    },
     country: {
-        type: String,
-      },
+      type: String,
+    },
     zipCode: {
-        type: String,
+      type: String,
     },
     longitude: {
-        type: String,
-    },    
+      type: String,
+    },
     latitude: {
-        type: String,
+      type: String,
     },
     area: {
-        type: String,
+      type: String,
     },
     areaUnit: {
-        type: String,
+      type: String,
     },
     leasePeroid: {
-        type: String,
+      type: String,
     },
     salePrice: {
-        type: String,
+      type: String,
     },
     reducedPrice: {
-        type: String,
+      type: String,
     },
     currency: {
-        type: String,
+      type: String,
     },
     visitHours: {
-        type: String,
+      type: String,
     },
     bedroomCount: {
-        type: String,
+      type: String,
     },
     bathCount: {
-        type: String,
+      type: String,
+    },
+    yearBuilt: {
+      type: String,
+    },
+    foundation: {
+      type: String,
+    },
+    stories: {
+      type: String,
+    },
+    roof: {
+      type: String,
+    },
+    flooring: {
+      type: String,
+    },
+    cooling: {
+      type: String,
+    },
+    heating: {
+      type: String,
+    },
+    fireplace: {
+      type: String,
+    },
+    style: {
+      type: String,
+    },
+    pool: {
+      type: String,
+    },
+    parking: {
+      type: String,
     },
     tags: {
-        type: Array,
+      type: Array,
     },
     reference: {
-        type: String,
+      type: String,
+    },
+    mlsId: {
+      type: String,
     },
     agentId: {
-        type: Schema.Types.ObjectId,
-        ref: 'Agent'    
+      type: Schema.Types.ObjectId,
+      ref: "Agent",
     },
-    filters: [{
+    filters: [
+      {
         type: Schema.Types.ObjectId,
-        ref: 'Filter'    
-    }],
+        ref: "Filter",
+      },
+    ],
   },
   {
     timestamps: true,
@@ -108,6 +148,6 @@ const propertySchema = mongoose.Schema(
 /**
  * @typedef Property
  */
-const Property = mongoose.model('Property', propertySchema);
+const Property = mongoose.model("Property", propertySchema);
 
 module.exports = Property;
