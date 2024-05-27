@@ -5,7 +5,7 @@ const createProperty = {
     name: Joi.string().trim().required(),
     code: Joi.string(),
     description: Joi.string(),
-    status: Joi.string().valid('for_sale', 'sold', 'incoming', 'for_rent').default('incoming'),
+    status: Joi.string().valid('for_sale', 'sold', 'incoming', 'for_rent', 'featured').default('incoming'),
     media: Joi.array().items(Joi.object({
       smUrl: Joi.string(),
       mdUrl: Joi.string(),

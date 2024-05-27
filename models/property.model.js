@@ -18,7 +18,7 @@ const propertySchema = mongoose.Schema(
     status: {
         type: String,
         defaultValue: 'incoming',
-        enum: ['for_sale', 'sold', 'incoming', 'for_rent'],
+        enum: ['for_sale', 'sold', 'incoming', 'for_rent', 'featured'],
     },
     media: [{
       smUrl: {

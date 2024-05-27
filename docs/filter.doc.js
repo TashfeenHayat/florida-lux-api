@@ -7,17 +7,44 @@
  *       properties:
  *         name:
  *           type: string
+ *           description: Name of the property
  *           trim: true
- *           description: The name of the filter.
+ *           required: true
  *         code:
  *           type: string
- *           description: The code of the filter.
+ *           description: Code of the property
  *         description:
  *           type: string
- *           description: The description of the filter.
+ *           description: Description of the property
  *         photo:
  *           type: string
- *           description: The URL of the filter's photo.
+ *           description: URL of the property's photo
+ *         features:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Name of the feature
+ *               description:
+ *                 type: string
+ *                 description: Description of the feature
+ *         geo:
+ *           type: object
+ *           properties:
+ *             east:
+ *               type: string
+ *               description: Eastern coordinate
+ *             west:
+ *               type: string
+ *               description: Western coordinate
+ *             north:
+ *               type: string
+ *               description: Northern coordinate
+ *             south:
+ *               type: string
+ *               description: Southern coordinate
  *
  * paths:
  *   /v1/filter:
