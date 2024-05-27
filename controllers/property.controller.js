@@ -173,9 +173,29 @@ const getProperties = catchAsync(async (req, res) => {
   }
 });
 
+const deleteProperty = catchAsync(async (req, res) => {
+  const { permissions } = req.user.roleId;
+  const all = permissions.find((i) => i.module === "all");
+
+  if (all) {
+    const property = await Property.deleteOne({ _id: req.params.id });
+
+    if (property.deletedCount > 0) {
+      return res.status(200).send("Property deleted successfully");
+    } else {
+      return res.status(404).send("Property not found");
+    }
+  } else {
+    return res
+      .status(403)
+      .send("Forbiden! You are not allowed to create an agent");
+  }
+});
+
 module.exports = {
   createProperty,
   getProperty,
   updateProperty,
   getProperties,
+  deleteProperty,
 };

@@ -14,6 +14,8 @@ router
 router
   .route('/:id')
     .patch(auth(), validate(propertyValidation.updateProperty), propertyController.updateProperty)
-    .get(propertyController.getProperty);
+    .get(propertyController.getProperty)
+    .delete(auth(), propertyController.deleteProperty);
+    
 
 module.exports = router;
