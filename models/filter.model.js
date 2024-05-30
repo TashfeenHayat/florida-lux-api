@@ -27,18 +27,7 @@ const filterSchema = mongoose.Schema(
       },
     ],
     geo: {
-      east: {
-        type: String,
-      },
-      west: {
-        type: String,
-      },
-      north: {
-        type: String,
-      },
-      south: {
-        type: String,
-      },
+      type: Object,
     },
   },
   {

@@ -23,6 +23,7 @@ const createFilter = catchAsync(async (req, res) => {
 const getFilter = catchAsync(async (req, res) => {
   try {
     const filter = await Filter.findById(req.params.id);
+
     return res.status(200).send(filter);
   } catch (error) {
     // Handle errors
@@ -47,6 +48,7 @@ const updateFilter = catchAsync(async (req, res) => {
 });
 
 const deleteFilter = catchAsync(async (req, res) => {
+  console.log(req.user);
   const { permissions } = req.user.roleId;
   const all = permissions.find((i) => i.module === "all");
 
@@ -74,11 +76,7 @@ const getAllFilters = catchAsync(async (req, res) => {
 
     // Add search filters to the query object
     if (key) {
-      query.name = { $regex: key, $options: "i" }; // Case-insensitive regex search for name
-
-      // If key is provided
-      const allFilters = await Filter.find(query);
-      return res.status(200).json(allFilters);
+      query.$or = [{ name: { $regex: key, $options: "i" } }];
     }
 
     // Find total count of filters
