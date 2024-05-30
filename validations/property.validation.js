@@ -5,12 +5,16 @@ const createProperty = {
     name: Joi.string().trim().required(),
     code: Joi.string(),
     description: Joi.string(),
-    status: Joi.string().valid('for_sale', 'sold', 'incoming', 'for_rent', 'featured').default('incoming'),
-    media: Joi.array().items(Joi.object({
-      smUrl: Joi.string(),
-      mdUrl: Joi.string(),
-      xlUrl: Joi.string()
-    })),
+    status: Joi.string()
+      .valid("for_sale", "sold", "incoming", "for_rent", "featured")
+      .default("incoming"),
+    media: Joi.array().items(
+      Joi.object({
+        smUrl: Joi.string(),
+        mdUrl: Joi.string(),
+        xlUrl: Joi.string(),
+      })
+    ),
     neighborhood: Joi.string(),
     addressLine1: Joi.string(),
     addressLine2: Joi.string(),
@@ -83,8 +87,21 @@ const updateProperty = {
     bathCount: Joi.string(),
     tags: Joi.array().items(Joi.string()),
     reference: Joi.string(),
+    mlsId: Joi.any(),
+    yearBuilt: Joi.string(),
+    foundation: Joi.string(),
+    stories: Joi.string(),
+    roof: Joi.string(),
+    flooring: Joi.string(),
+    cooling: Joi.string(),
+    heating: Joi.string(),
+    fireplace: Joi.string(),
+    style: Joi.string(),
+    pool: Joi.string(),
+    parking: Joi.string(),
     agentId: Joi.string().regex(/^[0-9a-fA-F]{24}$/), // Assuming agentId is a valid MongoDB ObjectId
     filters: Joi.array().items(Joi.string()), // Assuming filterIds are valid MongoDB ObjectIds
+    features: Joi.array().items(Joi.any()), // Assuming filterIds are valid MongoDB ObjectIds
   }),
 };
 

@@ -5,8 +5,7 @@ const mlsApi = "https://api.simplyrets.com/";
 const mlsKey = "Basic " + btoa("mweis_18f15548" + ":" + "3346216f22164a64");
 
 // Define the options for the request
-const options = {
-  url: mlsApi + "properties?status=Active&count=true",
+let options = {
   headers: {
     accept: "application/json",
     Authorization: mlsKey,
@@ -40,7 +39,7 @@ const createProperty = catchAsync(async (req, res) => {
 });
 
 const getProperty = catchAsync(async (req, res) => {
-  const property = await Property.findById(req.params.id)
+  let property = await Property.findById(req.params.id)
     .populate({
       path: "agentId",
     })
@@ -48,7 +47,17 @@ const getProperty = catchAsync(async (req, res) => {
       path: "filters",
     })
     .exec();
-  return res.status(200).send(property);
+  if (property) {
+    options.url = mlsApi + `properties/${property.mlsId}?count=true`;
+
+    return request(options, async (error, response) => {
+      const mlsProperty = JSON.parse(response.body);
+
+      return res.status(200).send({ ...property, mlsProperty });
+    });
+  } else {
+    return res.status(404).send("Property not found");
+  }
 });
 
 const updateProperty = catchAsync(async (req, res) => {
@@ -147,6 +156,7 @@ const getProperties = catchAsync(async (req, res) => {
       if (key) {
         options.qs = { q: key };
       }
+      options.url = mlsApi + "properties?status=Active&count=true";
 
       return request(options, (error, response) => {
         if (error) throw new Error(error);

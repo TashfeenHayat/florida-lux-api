@@ -110,6 +110,32 @@
  *           items:
  *             type: string
  *           description: The IDs of filters associated with the property.
+ *         features:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Name of the feature
+ *               description:
+ *                 type: string
+ *                 description: Description of the feature
+ *         geo:
+ *           type: object
+ *           properties:
+ *             east:
+ *               type: string
+ *               description: Eastern coordinate
+ *             west:
+ *               type: string
+ *               description: Western coordinate
+ *             north:
+ *               type: string
+ *               description: Northern coordinate
+ *             south:
+ *               type: string
+ *               description: Southern coordinate
  *
  * /v1/property:
  *   post:

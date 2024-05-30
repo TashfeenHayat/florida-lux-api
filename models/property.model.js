@@ -16,9 +16,9 @@ const propertySchema = mongoose.Schema(
       type: String,
     },
     status: {
-        type: String,
-        defaultValue: 'incoming',
-        enum: ['for_sale', 'sold', 'incoming', 'for_rent', 'featured'],
+      type: String,
+      defaultValue: "incoming",
+      enum: ["for_sale", "sold", "incoming", "for_rent", "featured"],
     },
     media: [
       {
@@ -139,6 +139,19 @@ const propertySchema = mongoose.Schema(
         ref: "Filter",
       },
     ],
+    features: [
+      {
+        name: {
+          type: String,
+        },
+        description: {
+          type: String,
+        },
+      },
+    ],
+    geo: {
+      type: Object,
+    },
   },
   {
     timestamps: true,
