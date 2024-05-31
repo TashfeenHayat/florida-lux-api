@@ -187,7 +187,16 @@
  *         name: status
  *         schema:
  *           type: string
- *         description: Optional. The status to search for properties. "for_sale", "sold", "incoming", "for_rent"
+ *         description: |
+ *              - Optional. The status to search for properties. "for_sale", "sold", "incoming", "for_rent".
+ *              - Use following in case of mlsOnly is set to "true".
+ *              - Request listings by a specific status. This parameter defaults to active and you can specify multiple statuses in a single query.
+ *              - Listing statuses depend on your RETS vendor's field availability. Below is a brief description of each status with possible synonyms which may map to your RETS vendor-specific statuses.
+ *              - Active: Active Listing which is still on the market
+ *              - ActiveUnderContract: An offer has been accepted but the listing is still on market. Synonyms: Accepting Backup Offers, Backup Offer, Active With Accepted. Synonyms: Offer, Backup, Contingent
+ *              - Pending: An offer has been accepted and the listing is no longer on market. Synonyms: Offer Accepted, Under Contract
+ *              - ComingSoon: This is a listing that has not yet been on market but will be on market soon.
+ *              - Closed: The purchase agreement has been fulfilled or the lease agreement has been executed. Synonyms: Sold, Leased, Rented, Closed Sale
  *       - in: query
  *         name: filterId
  *         schema:
@@ -253,6 +262,11 @@
  *         required: true
  *         schema:
  *           type: string
+ *       - in: query
+ *         name: mlsOnly
+ *         schema:
+ *           type: boolean
+ *         description: Optional. Get properties only from MLS.
  *     responses:
  *       '200':
  *         description: Successful operation

@@ -39,21 +39,27 @@ const createProperty = catchAsync(async (req, res) => {
 });
 
 const getProperty = catchAsync(async (req, res) => {
-  let property = await Property.findById(req.params.id)
-    .populate({
-      path: "agentId",
-    })
-    .populate({
-      path: "filters",
-    })
-    .exec();
+  let property = {};
+  if (req.query.mlsOnly) {
+    property.mlsId = req.params.id;
+  } else {
+    property = await Property.findById(req.params.id)
+      .populate({
+        path: "agentId",
+      })
+      .populate({
+        path: "filters",
+      })
+      .exec();
+  }
+
   if (property) {
     options.url = mlsApi + `properties/${property.mlsId}?count=true`;
 
-    return request(options, async (error, response) => {
-      const mlsProperty = JSON.parse(response.body);
+    request(options, async (error, response, body) => {
+      const mls = JSON.parse(body);
 
-      return res.status(200).send({ ...property, mlsProperty });
+      return res.status(200).send({ property, mls });
     });
   } else {
     return res.status(404).send("Property not found");
@@ -156,7 +162,10 @@ const getProperties = catchAsync(async (req, res) => {
       if (key) {
         options.qs = { q: key };
       }
-      options.url = mlsApi + "properties?status=Active&count=true";
+      if (status) {
+        options.qs.status = status;
+      }
+      options.url = mlsApi + "properties?count=true";
 
       return request(options, (error, response) => {
         if (error) throw new Error(error);
