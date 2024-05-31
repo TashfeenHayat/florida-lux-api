@@ -104,8 +104,10 @@ const getProperties = catchAsync(async (req, res) => {
       status,
       agentId,
       filterId,
-      bedroomCount,
-      bathCount,
+      minBedCount,
+      maxBedCount,
+      minBathCount,
+      maxBathCount,
       minPrice,
       maxPrice,
       minArea,
@@ -143,11 +145,11 @@ const getProperties = catchAsync(async (req, res) => {
     }
 
     if (bedroomCount) {
-      query.bedroomCount = bedroomCount;
+      query.bedroomCount = { $gte: minBedCount, $lte: maxBedCount };
     }
 
     if (bathCount) {
-      query.bathCount = bathCount;
+      query.bathCount = { $gte: minBathCount, $lte: maxBathCount };
     }
 
     if (minPrice || maxPrice) {
@@ -165,6 +167,31 @@ const getProperties = catchAsync(async (req, res) => {
       if (status) {
         options.qs.status = status;
       }
+      if (minBedCount) {
+        options.qs.minbeds = minBedCount;
+      }
+      if (maxBedCount) {
+        options.qs.maxbeds = maxBedCount;
+      }
+      if (minBathCount) {
+        options.qs.minbaths = minBathCount;
+      }
+      if (maxBathCount) {
+        options.qs.maxbaths = maxBathCount;
+      }
+      if (minPrice) {
+        options.qs.minprice = minPrice;
+      }
+      if (maxPrice) {
+        options.qs.maxprice = maxPrice;
+      }
+      if (minArea) {
+        options.qs.minarea = minArea;
+      }
+      if (maxArea) {
+        options.qs.maxarea = maxArea;
+      }
+
       options.url = mlsApi + "properties?count=true";
 
       return request(options, (error, response) => {

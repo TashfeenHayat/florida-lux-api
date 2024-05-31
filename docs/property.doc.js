@@ -203,15 +203,25 @@
  *           type: string
  *         description: Optional. The filterId to search for properties.
  *       - in: query
- *         name: bedroomCount
+ *         name: minBedCount
  *         schema:
  *           type: string
- *         description: Optional. The bedroomCount to search for properties.
+ *         description: Optional. The minBedCount to search for properties.
  *       - in: query
- *         name: bathCount
+ *         name: maxBedCount
  *         schema:
  *           type: string
- *         description: Optional. The bathCount to search for properties.
+ *         description: Optional. The maxBedCount to search for properties.
+ *       - in: query
+ *         name: minBathCount
+ *         schema:
+ *           type: string
+ *         description: Optional. The minBathCount to search for properties.
+ *       - in: query
+ *         name: maxBathCount
+ *         schema:
+ *           type: string
+ *         description: Optional. The maxBathCount to search for properties.
  *       - in: query
  *         name: minPrice
  *         schema:
@@ -221,17 +231,53 @@
  *         name: maxPrice
  *         schema:
  *           type: string
- *         description: Optional. The maxPrice to search for properties.
+ *           description: Optional. The maxPrice to search for properties.
  *       - in: query
  *         name: minArea
  *         schema:
  *           type: string
- *         description: Optional. The minArea to search for properties.
+ *           description: Optional. The minArea to search for properties.
  *       - in: query
  *         name: maxArea
  *         schema:
  *           type: string
- *         description: Optional. The maxArea to search for properties.
+ *           description: Optional. The maxArea to search for properties.
+ *         - in: query
+ *           name: maxprice
+ *           schema:
+ *             type: integer
+ *           description: Filter listings by a maximum price.
+ *         - in: query
+ *           name: minarea
+ *           schema:
+ *             type: integer
+ *           description: Filter listings by a minimum area size in Sq Ft.
+ *         - in: query
+ *           name: maxarea
+ *           schema:
+ *             type: integer
+ *           description: Filter listings by a maximum area size in Sq Ft.
+ *         - in: query
+ *           name: minbaths
+ *           schema:
+ *             type: integer
+ *           description: Filter listings by a minimum number of bathrooms.
+ *         - in: query
+ *           name: maxbaths
+ *           schema:
+ *             type: integer
+ *           description: Filter listings by a maximum number of bathrooms.
+ *         - in: query
+ *           name: minbeds
+ *           schema:
+ *             type: integer
+ *           description: Filter listings by a minimum number of bedrooms.
+ *         - in: query
+ *           name: maxbeds
+ *           schema:
+ *             type: integer
+ *           description: Filter listings by a maximum number of bedrooms.
+
  *       - in: query
  *         name: mlsOnly
  *         schema:
