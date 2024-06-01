@@ -243,10 +243,82 @@ const deleteProperty = catchAsync(async (req, res) => {
   }
 });
 
+const getIdxProperties = catchAsync(async (req, res) => {
+  try {
+    const {
+      idx = "ignore",
+      key,
+      limit = 10,
+      page = 1,
+      status,
+      minBedCount,
+      maxBedCount,
+      minBathCount,
+      maxBathCount,
+      minPrice,
+      maxPrice,
+      minArea,
+      maxArea,
+    } = req.query;
+
+    options.qs = {};
+    if (key) {
+      options.qs = { q: key };
+    }
+    if (status) {
+      options.qs.status = status;
+    }
+    if (minBedCount) {
+      options.qs.minbeds = minBedCount;
+    }
+    if (maxBedCount) {
+      options.qs.maxbeds = maxBedCount;
+    }
+    if (minBathCount) {
+      options.qs.minbaths = minBathCount;
+    }
+    if (maxBathCount) {
+      options.qs.maxbaths = maxBathCount;
+    }
+    if (minPrice) {
+      options.qs.minprice = minPrice;
+    }
+    if (maxPrice) {
+      options.qs.maxprice = maxPrice;
+    }
+    if (minArea) {
+      options.qs.minarea = minArea;
+    }
+    if (maxArea) {
+      options.qs.maxarea = maxArea;
+    }
+
+    options.qs.limit = limit;
+    options.qs.offset = page * limit;
+    options.qs.idx = idx;
+
+    options.url = mlsApi + "properties?count=true";
+
+    return request(options, (error, response) => {
+      if (error) throw new Error(error);
+      const properties = JSON.parse(response.body);
+
+      return res
+        .status(200)
+        .json({ properties, totalCount: response.headers["x-total-count"] });
+    });
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    return res.status(500).json("Internal server error");
+  }
+});
+
 module.exports = {
   createProperty,
   getProperty,
   updateProperty,
   getProperties,
   deleteProperty,
+  getIdxProperties,
 };

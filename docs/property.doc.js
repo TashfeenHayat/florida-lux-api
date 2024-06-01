@@ -292,6 +292,130 @@
  *       '500':
  *         description: Internal server error.
  *
+ * /v1/property/idx:
+ *   get:
+ *     summary: Get loggedin Property profile
+ *     description: Retrieve the profile information of the authenticated Property.
+ *     parameters:
+ *       - in: query
+ *         name: key
+ *         schema:
+ *           type: string
+ *         description: Optional. The key to search for properties.
+ *       - in: query
+ *         name: idx
+ *         schema:
+ *           type: string
+ *         description: 
+ *           -Specify the IDX display requirements for the listings in the response. The idx parameter checks if the internetAddressDisplay and internetEntireListingDisplay for each listing are true (or null) or false based on this setting.
+ *            -idx=null (default), listing, address, ignore
+ *       - in: query
+ *         name: limit
+ *         description: The number of properties to return per page.
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: page
+ *         description: The page number of results to return.
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *         description: |
+ *              - Optional. The status to search for properties. "for_sale", "sold", "incoming", "for_rent".
+ *              - Use following in case of mlsOnly is set to "true".
+ *              - Request listings by a specific status. This parameter defaults to active and you can specify multiple statuses in a single query.
+ *              - Listing statuses depend on your RETS vendor's field availability. Below is a brief description of each status with possible synonyms which may map to your RETS vendor-specific statuses.
+ *              - Active: Active Listing which is still on the market
+ *              - ActiveUnderContract: An offer has been accepted but the listing is still on market. Synonyms: Accepting Backup Offers, Backup Offer, Active With Accepted. Synonyms: Offer, Backup, Contingent
+ *              - Pending: An offer has been accepted and the listing is no longer on market. Synonyms: Offer Accepted, Under Contract
+ *              - ComingSoon: This is a listing that has not yet been on market but will be on market soon.
+ *              - Closed: The purchase agreement has been fulfilled or the lease agreement has been executed. Synonyms: Sold, Leased, Rented, Closed Sale
+ *       - in: query
+ *         name: minBedCount
+ *         schema:
+ *           type: string
+ *         description: Optional. The minBedCount to search for properties.
+ *       - in: query
+ *         name: maxBedCount
+ *         schema:
+ *           type: string
+ *         description: Optional. The maxBedCount to search for properties.
+ *       - in: query
+ *         name: minBathCount
+ *         schema:
+ *           type: string
+ *         description: Optional. The minBathCount to search for properties.
+ *       - in: query
+ *         name: maxBathCount
+ *         schema:
+ *           type: string
+ *         description: Optional. The maxBathCount to search for properties.
+ *       - in: query
+ *         name: minPrice
+ *         schema:
+ *           type: string
+ *         description: Optional. The minPrice to search for properties.
+ *       - in: query
+ *         name: maxPrice
+ *         schema:
+ *           type: string
+ *         description: Optional. The maxPrice to search for properties.
+ *       - in: query
+ *         name: minArea
+ *         schema:
+ *           type: string
+ *         description: Optional. The minArea to search for properties.
+ *       - in: query
+ *         name: maxArea
+ *         schema:
+ *           type: string
+ *         description: Optional. The maxArea to search for properties.
+ *       - in: query
+ *         name: maxprice
+ *         schema:
+ *           type: integer
+ *         description: Filter listings by a maximum price.
+ *       - in: query
+ *         name: minarea
+ *         schema:
+ *           type: integer
+ *         description: Filter listings by a minimum area size in Sq Ft.
+ *       - in: query
+ *         name: maxarea
+ *         schema:
+ *           type: integer
+ *         description: Filter listings by a maximum area size in Sq Ft.
+ *       - in: query
+ *         name: minbaths
+ *         schema:
+ *           type: integer
+ *         description: Filter listings by a minimum number of bathrooms.
+ *       - in: query
+ *         name: maxbaths
+ *         schema:
+ *           type: integer
+ *         description: Filter listings by a maximum number of bathrooms.
+ *       - in: query
+ *         name: minbeds
+ *         schema:
+ *           type: integer
+ *         description: Filter listings by a minimum number of bedrooms.
+ *       - in: query
+ *         name: maxbeds
+ *         schema:
+ *           type: integer
+ *         description: Filter listings by a maximum number of bedrooms.
+ *     tags:
+ *       - Property
+ *     responses:
+ *       '200':
+ *         description: Successfully registered.
+ *       '400':
+ *         description: Bad request.
+ *       '500':
+ *         description: Internal server error.
+ 
  * /v1/property/{id}:
  *   get:
  *     summary: Get property by ID

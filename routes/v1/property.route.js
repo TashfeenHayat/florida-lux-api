@@ -15,6 +15,8 @@ router
   )
   .get(propertyController.getProperties);
 
+router.route("/idx").get(propertyController.getIdxProperties);
+
 router
   .route("/:id")
   .patch(
@@ -24,7 +26,5 @@ router
   )
   .get(propertyController.getProperty)
   .delete(auth(), propertyController.deleteProperty);
-
-router.route("/idx").get(propertyController.getProperties);
 
 module.exports = router;
