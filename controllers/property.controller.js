@@ -200,10 +200,11 @@ const getProperties = catchAsync(async (req, res) => {
 
       return request(options, (error, response) => {
         if (error) throw new Error(error);
-
         const properties = JSON.parse(response.body);
 
-        return res.status(200).json({ properties });
+        return res
+          .status(200)
+          .json({ properties, totalCount: response.headers["x-total-count"] });
       });
     }
 
