@@ -144,11 +144,11 @@ const getProperties = catchAsync(async (req, res) => {
       query.filters = { $in: [filterId] };
     }
 
-    if (bedroomCount) {
+    if (minBedCount || maxBedCount) {
       query.bedroomCount = { $gte: minBedCount, $lte: maxBedCount };
     }
 
-    if (bathCount) {
+    if (minBathCount || maxBathCount) {
       query.bathCount = { $gte: minBathCount, $lte: maxBathCount };
     }
 
