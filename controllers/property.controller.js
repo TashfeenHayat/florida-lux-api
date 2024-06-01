@@ -161,6 +161,7 @@ const getProperties = catchAsync(async (req, res) => {
     }
 
     if (mlsOnly) {
+      options.qs = {};
       if (key) {
         options.qs = { q: key };
       }
@@ -191,8 +192,9 @@ const getProperties = catchAsync(async (req, res) => {
       if (maxArea) {
         options.qs.maxarea = maxArea;
       }
+
       options.qs.limit = limit;
-      options.qs.offset = page;
+      options.qs.offset = page * limit;
 
       options.url = mlsApi + "properties?count=true";
 
