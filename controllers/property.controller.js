@@ -191,6 +191,8 @@ const getProperties = catchAsync(async (req, res) => {
       if (maxArea) {
         options.qs.maxarea = maxArea;
       }
+      options.qs.limit = limit;
+      options.qs.offset = page;
 
       options.url = mlsApi + "properties?count=true";
 

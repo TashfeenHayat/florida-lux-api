@@ -16,6 +16,9 @@
  *         description:
  *           type: string
  *           description: Description of the property
+ *         condominiumOptions:
+ *           type: string
+ *           description: Condominium Options of the property
  *         photo:
  *           type: string
  *           description: URL of the property's photo
