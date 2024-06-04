@@ -102,6 +102,9 @@
  *         mlsId:
  *           type: string
  *           description: The reference id of the MLS System.
+ *         compensation:
+ *           type: string
+ *           description: If an y compensation.
  *         agentId:
  *           type: string
  *           description: The ID of the agent associated with the property.
@@ -306,6 +309,11 @@
  *         name: idx
  *         schema:
  *           type: string
+ *         enum:
+ *               - null
+ *               - listing
+ *               - address
+ *               - ignore
  *         description: 
  *           -Specify the IDX display requirements for the listings in the response. The idx parameter checks if the internetAddressDisplay and internetEntireListingDisplay for each listing are true (or null) or false based on this setting.
  *            -idx=null (default), listing, address, ignore
@@ -406,6 +414,27 @@
  *         schema:
  *           type: integer
  *         description: Filter listings by a maximum number of bedrooms.
+ *       - in: query
+ *         name: counties
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *           description: Array of counties codes to filter 
+ *       - in: query
+ *         name: state
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *           description: Array of states codes to filter 
+ *       - in: query
+ *         name: cities
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *           description: Array of cities codes to filter 
  *     tags:
  *       - Property
  *     responses:

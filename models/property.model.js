@@ -129,6 +129,9 @@ const propertySchema = mongoose.Schema(
     mlsId: {
       type: String,
     },
+    compensation: {
+      type: String,
+    },
     agentId: {
       type: Schema.Types.ObjectId,
       ref: "Agent",

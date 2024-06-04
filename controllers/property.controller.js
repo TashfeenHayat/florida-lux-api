@@ -259,6 +259,9 @@ const getIdxProperties = catchAsync(async (req, res) => {
       maxPrice,
       minArea,
       maxArea,
+      counties,
+      state,
+      cities,
     } = req.query;
 
     options.qs = {};
@@ -292,7 +295,15 @@ const getIdxProperties = catchAsync(async (req, res) => {
     if (maxArea) {
       options.qs.maxarea = maxArea;
     }
-
+    if (counties) {
+      options.qs.counties = counties;
+    }
+    if (state) {
+      options.qs.state = state;
+    }
+    if (cities) {
+      options.qs.cities = cities;
+    }
     options.qs.limit = limit;
     options.qs.offset = page * limit;
     options.qs.idx = idx;
