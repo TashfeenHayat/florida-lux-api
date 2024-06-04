@@ -54,27 +54,31 @@ const getInquiry = catchAsync(async (req, res) => {
 });
 
 const getInquiries = catchAsync(async (req, res) => {
-  try {
-    const { key } = req.query;
+  const { key, limit = 10, page = 1 } = req.query;
+  const skip = (parseInt(page) - 1) * parseInt(limit);
+  let query = {};
 
-    const query = {};
-    // Add search filters to the query object
-    if (key) {
-      query.name = { $regex: key, $options: "i" }; // Case-insensitive regex search for name
-
-      // If key is provided
-      const allInquiries = await Inquiry.find(query);
-      return res.status(200).json(allInquiries);
-    }
-
-    // If no key is provided, return all agents
-    const allInquiries = await Inquiry.find(query);
-    return res.status(200).json(allInquiries);
-  } catch (error) {
-    // Handle errors
-    console.error(error);
-    return res.status(500).json("Internal server error");
+  // Add search filters to the query object
+  if (key) {
+    // query.firstName = { $regex: key, $options: 'i' }; // Case-insensitive regex search for name
+    query = {
+      $or: [
+        { firstName: { $regex: key, $options: "i" } },
+        { lastName: { $regex: key, $options: "i" } },
+        { email: { $regex: key, $options: "i" } },
+        { phoneNumber: { $regex: key, $options: "i" } },
+      ],
+    };
   }
+  // Find total count of inquiries
+  const totalCount = await Inquiry.countDocuments(query);
+
+  // If key is provided
+  const inquiries = await Inquiry.find(query)
+    .limit(parseInt(limit))
+    .skip(skip)
+    .sort({ createdAt: -1 });
+  return res.status(200).json({ inquiries, totalCount });
 });
 
 module.exports = {
