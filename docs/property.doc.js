@@ -281,6 +281,32 @@
  *           type: integer
  *         description: Filter listings by a maximum number of bedrooms.
  *       - in: query
+ *         name: type
+ *         schema:
+ *           type: array
+ *         description: Filter listings by a type residential, rental, mobilehome, condominium, multifamily, commercial, land, farm.
+ *       - in: query
+ *         name: counties
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *           description: Array of counties codes to filter 
+ *       - in: query
+ *         name: state
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *           description: Array of states codes to filter 
+ *       - in: query
+ *         name: cities
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: string
+ *           description: Array of cities codes to filter 
+ *       - in: query
  *         name: mlsOnly
  *         schema:
  *           type: boolean
@@ -414,6 +440,11 @@
  *         schema:
  *           type: integer
  *         description: Filter listings by a maximum number of bedrooms.
+ *       - in: query
+ *         name: type
+ *         schema:
+ *           type: array
+ *         description: Filter listings by a type residential, rental, mobilehome, condominium, multifamily, commercial, land, farm.
  *       - in: query
  *         name: counties
  *         schema:

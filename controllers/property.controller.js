@@ -112,6 +112,10 @@ const getProperties = catchAsync(async (req, res) => {
       maxPrice,
       minArea,
       maxArea,
+      counties,
+      type,
+      state,
+      cities,
       mlsOnly,
     } = req.query;
     const query = {};
@@ -192,9 +196,20 @@ const getProperties = catchAsync(async (req, res) => {
       if (maxArea) {
         options.qs.maxarea = maxArea;
       }
-
+      if (type) {
+        options.qs.type = type;
+      }
+      if (counties) {
+        options.qs.counties = counties;
+      }
+      if (state) {
+        options.qs.state = state;
+      }
+      if (cities) {
+        options.qs.cities = cities;
+      }
       options.qs.limit = limit;
-      options.qs.offset = page * limit;
+      options.qs.offset = (page - 1) * limit;
 
       options.url = mlsApi + "properties?count=true";
 
@@ -249,7 +264,7 @@ const getIdxProperties = catchAsync(async (req, res) => {
       idx = "ignore",
       key,
       limit = 10,
-      page = 1,
+      page = 0,
       status,
       minBedCount,
       maxBedCount,
@@ -259,6 +274,7 @@ const getIdxProperties = catchAsync(async (req, res) => {
       maxPrice,
       minArea,
       maxArea,
+      type,
       counties,
       state,
       cities,
@@ -294,6 +310,9 @@ const getIdxProperties = catchAsync(async (req, res) => {
     }
     if (maxArea) {
       options.qs.maxarea = maxArea;
+    }
+    if (type) {
+      options.qs.type = type;
     }
     if (counties) {
       options.qs.counties = counties;
