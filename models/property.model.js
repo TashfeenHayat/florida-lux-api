@@ -132,6 +132,9 @@ const propertySchema = mongoose.Schema(
     compensation: {
       type: String,
     },
+    press: {
+      type: String,
+    },
     agentId: {
       type: Schema.Types.ObjectId,
       ref: "Agent",
