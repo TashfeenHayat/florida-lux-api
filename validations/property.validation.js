@@ -48,7 +48,7 @@ const createProperty = {
     reference: Joi.string(),
     mlsId: Joi.string(),
     compensation: Joi.string(),
-    press: Joi.string(),
+    press: Joi.any(),
     agentId: Joi.string().regex(/^[0-9a-fA-F]{24}$/), // Assuming agentId is a valid MongoDB ObjectId
     filters: Joi.array().items(Joi.string()), // Assuming filterIds are valid MongoDB ObjectIds
   }),
@@ -102,7 +102,7 @@ const updateProperty = {
     pool: Joi.string(),
     parking: Joi.string(),
     compensation: Joi.string(),
-    press: Joi.string(),
+    press: Joi.any(),
     agentId: Joi.string().regex(/^[0-9a-fA-F]{24}$/), // Assuming agentId is a valid MongoDB ObjectId
     filters: Joi.array().items(Joi.string()), // Assuming filterIds are valid MongoDB ObjectIds
     features: Joi.array().items(Joi.any()), // Assuming filterIds are valid MongoDB ObjectIds

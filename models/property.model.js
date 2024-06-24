@@ -133,7 +133,7 @@ const propertySchema = mongoose.Schema(
       type: String,
     },
     press: {
-      type: String,
+      type: Object,
     },
     agentId: {
       type: Schema.Types.ObjectId,
