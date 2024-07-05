@@ -117,13 +117,16 @@ const getProperties = catchAsync(async (req, res) => {
       state,
       cities,
       mlsOnly,
+      fromPress,
+      withoutPress,
     } = req.query;
     const query = {};
     const skip = (parseInt(page) - 1) * parseInt(limit);
+    query.$or = [];
 
     // Add search filters to the query object
     if (key) {
-      query.$or = [
+      query.$or.push(
         { name: { $regex: key, $options: "i" } },
         { neighborhood: { $regex: key, $options: "i" } },
         { status: { $regex: key, $options: "i" } },
@@ -132,8 +135,8 @@ const getProperties = catchAsync(async (req, res) => {
         { state: { $regex: key, $options: "i" } },
         { city: { $regex: key, $options: "i" } },
         { country: { $regex: key, $options: "i" } },
-        { zipCode: { $regex: key, $options: "i" } },
-      ];
+        { zipCode: { $regex: key, $options: "i" } }
+      );
     }
 
     if (status) {
@@ -162,6 +165,14 @@ const getProperties = catchAsync(async (req, res) => {
 
     if (minArea || maxArea) {
       query.area = { $gte: minArea, $lte: maxArea };
+    }
+
+    if (fromPress) {
+      query.$or.push({ press: { $exists: true, $ne: null } });
+    }
+
+    if (withoutPress) {
+      query.$or.push({ press: { $exists: false } });
     }
 
     if (mlsOnly) {
@@ -223,6 +234,7 @@ const getProperties = catchAsync(async (req, res) => {
       });
     }
 
+    if (query["$or"].length === 0) delete query["$or"];
     // Find total count of properties
     const totalCount = await Property.countDocuments(query);
 
@@ -230,7 +242,8 @@ const getProperties = catchAsync(async (req, res) => {
     const properties = await Property.find(query)
       .limit(parseInt(limit))
       .skip(skip)
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .exec();
     return res.status(200).json({ properties, totalCount });
   } catch (error) {
     // Handle errors

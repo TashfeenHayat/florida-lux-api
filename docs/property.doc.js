@@ -311,6 +311,16 @@
  *         schema:
  *           type: boolean
  *         description: Optional. Get properties only from MLS.
+ *       - in: query
+ *         name: fromPress
+ *         schema:
+ *           type: boolean
+ *         description: Optional. Get properties only with Press/News.
+ *       - in: query
+ *         name: withoutPress
+ *         schema:
+ *           type: boolean
+ *         description: Optional. Get properties only with no Press/News.
  *     tags:
  *       - Property
  *     responses:
