@@ -123,6 +123,7 @@ const getProperties = catchAsync(async (req, res) => {
     const query = {};
     const skip = (parseInt(page) - 1) * parseInt(limit);
     query.$or = [];
+    query.$and = [];
 
     // Add search filters to the query object
     if (key) {
@@ -168,11 +169,11 @@ const getProperties = catchAsync(async (req, res) => {
     }
 
     if (fromPress) {
-      query.$or.push({ press: { $exists: true, $ne: null } });
+      query.$and.push({ press: { $ne: null } });
     }
 
     if (withoutPress) {
-      query.$or.push({ press: { $exists: false } });
+      query.$and.push({ press: { $exists: false } });
     }
 
     if (mlsOnly) {
@@ -235,6 +236,7 @@ const getProperties = catchAsync(async (req, res) => {
     }
 
     if (query["$or"].length === 0) delete query["$or"];
+    if (query["$and"].length === 0) delete query["$and"];
     // Find total count of properties
     const totalCount = await Property.countDocuments(query);
 

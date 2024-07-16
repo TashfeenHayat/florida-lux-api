@@ -1,53 +1,58 @@
-const express = require('express');
+const express = require("express");
 // const authRoute = require('./auth.route');
-const userRoute = require('./user.route');
-const roleRoute = require('./role.route');
-const agentRoute = require('./agent.route');
-const filterRoute = require('./filter.route');
-const propertyRoute = require('./property.route');
-const docsRoute = require('./docs.route');
-const uploadRoute = require('./upload.route');
-const inquiryRoute = require('./inquiry.route');
+const userRoute = require("./user.route");
+const roleRoute = require("./role.route");
+const agentRoute = require("./agent.route");
+const filterRoute = require("./filter.route");
+const propertyRoute = require("./property.route");
+const docsRoute = require("./docs.route");
+const uploadRoute = require("./upload.route");
+const inquiryRoute = require("./inquiry.route");
+const blogRoute = require("./blog.route");
 
 const router = express.Router();
 
 const defaultRoutes = [
   {
-    path: '/docs',
+    path: "/docs",
     route: docsRoute,
   },
   {
-    path: '/user',
+    path: "/user",
     route: userRoute,
   },
   {
-    path: '/role',
+    path: "/role",
     route: roleRoute,
   },
   {
-    path: '/agent',
+    path: "/agent",
     route: agentRoute,
   },
   {
-    path: '/filter',
+    path: "/filter",
     route: filterRoute,
   },
   {
-    path: '/property',
+    path: "/property",
     route: propertyRoute,
   },
   {
-    path: '/upload',
+    path: "/upload",
     route: uploadRoute,
   },
   {
-    path: '/inquiry',
+    path: "/inquiry",
     route: inquiryRoute,
+  },
+  {
+    path: "/blog",
+    route: blogRoute,
   },
 ];
 
 defaultRoutes.forEach((route) => {
-    router.use(route.path, route.route);
-  });
+  router.use(route.path, route.route);
+});
 
 module.exports = router;
