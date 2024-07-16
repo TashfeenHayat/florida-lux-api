@@ -46,11 +46,12 @@ const createProperty = {
     parking: Joi.string(),
     tags: Joi.array().items(Joi.string()),
     reference: Joi.string(),
-    mlsId: Joi.string(),
+    mlsId: Joi.any(),
     compensation: Joi.string(),
     press: Joi.any(),
     agentId: Joi.string().regex(/^[0-9a-fA-F]{24}$/), // Assuming agentId is a valid MongoDB ObjectId
     filters: Joi.array().items(Joi.string()), // Assuming filterIds are valid MongoDB ObjectIds
+    features: Joi.array().items(Joi.any()), // Assuming featureIds are valid MongoDB ObjectIds
   }),
 };
 
