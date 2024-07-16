@@ -1,24 +1,20 @@
 const express = require("express");
 const auth = require("../../middlewares/auth");
 const validate = require("../../middlewares/validate");
-const filterValidation = require("../../validations/filter.validation");
-const filterController = require("../../controllers/filter.controller");
+const blogValidation = require("../../validations/blog.validation");
+const blogController = require("../../controllers/blog.controller");
 
 const router = express.Router();
 
 router
   .route("/")
-  .post(
-    auth(),
-    validate(filterValidation.createAgent),
-    filterController.createFilter
-  )
-  .get(filterController.getAllFilters);
+  .post(auth(), validate(blogValidation.createBlog), blogController.createBlog)
+  .get(blogController.getAllBlogs);
 
 router
   .route("/:id")
-  .patch(auth(), filterController.updateFilter)
-  .get(filterController.getFilter)
-  .delete(auth(), filterController.deleteFilter);
+  .patch(auth(), blogController.updateBlog)
+  .get(blogController.getBlog)
+  .delete(auth(), blogController.deleteBlog);
 
 module.exports = router;

@@ -1,30 +1,28 @@
-const mongoose = require("mongoose");
-
 const catchAsync = require("../utils/catchAsync");
-const { Filter } = require("../models");
+const { Blog } = require("../models");
 
 const createBlog = catchAsync(async (req, res) => {
-  const { name, code, description, photo } = req.body;
-
   const { permissions } = req.user.roleId;
   const all = permissions.find((i) => i.module === "all");
 
   if (all) {
-    await Filter.create({ name, code, description, photo });
+    await Blog.create(req.body);
 
-    return res.status(200).send("Filter created successfully");
+    return res.status(200).send("Blog created successfully");
   } else {
-    return res
-      .status(403)
-      .send("Forbiden! You are not allowed to create an Filter");
+    return res.status(403).send("Forbiden! You are not allowed");
   }
 });
 
-const getBlogsByAgent = catchAsync(async (req, res) => {
+const getBlog = catchAsync(async (req, res) => {
   try {
-    const filter = await Filter.findById(req.params.id);
+    const blog = await Blog.findById(req.params.id)
+      .populate({
+        path: "agentId",
+      })
+      .exec();
 
-    return res.status(200).send(filter);
+    return res.status(200).send(blog);
   } catch (error) {
     // Handle errors
     console.error(error);
@@ -32,73 +30,59 @@ const getBlogsByAgent = catchAsync(async (req, res) => {
   }
 });
 
-const getBlog = catchAsync(async (req, res) => {
-    try {
-      const filter = await Filter.findById(req.params.id);
-  
-      return res.status(200).send(filter);
-    } catch (error) {
-      // Handle errors
-      console.error(error);
-      return res.status(404).json("No filter foud");
-    }
-  });
-
 const updateBlog = catchAsync(async (req, res) => {
   const { permissions } = req.user.roleId;
   const all = permissions.find((i) => i.module === "all");
 
   if (all) {
-    await Filter.findByIdAndUpdate(req.params.id, req.body);
+    await Blog.findByIdAndUpdate(req.params.id, req.body);
 
-    return res.status(200).send("Filter updated successfully");
+    return res.status(200).send("Blog updated successfully");
   } else {
-    return res
-      .status(403)
-      .send("Forbiden! You are not allowed to create an Filter");
+    return res.status(403).send("Forbiden! You are not allowed");
   }
 });
 
 const deleteBlog = catchAsync(async (req, res) => {
-  console.log(req.user);
   const { permissions } = req.user.roleId;
   const all = permissions.find((i) => i.module === "all");
 
   if (all) {
-    const filter = await Filter.deleteOne({ _id: req.params.id });
+    const blog = await Blog.deleteOne({ _id: req.params.id });
 
-    if (filter.deletedCount > 0) {
-      return res.status(200).send("Filter deleted successfully");
+    if (blog.deletedCount > 0) {
+      return res.status(200).send("Blog deleted successfully");
     } else {
-      return res.status(404).send("Filter not found");
+      return res.status(404).send("Blog not found");
     }
   } else {
-    return res
-      .status(403)
-      .send("Forbiden! You are not allowed to create an agent");
+    return res.status(403).send("Forbiden! You are not allowed");
   }
 });
 
 const getAllBlogs = catchAsync(async (req, res) => {
   try {
-    const { key, limit = 10, page = 1 } = req.query;
+    const { limit = 10, page = 1, agentId } = req.query;
 
     const query = {};
     const skip = (parseInt(page) - 1) * parseInt(limit);
 
-    // Add search filters to the query object
-    if (key) {
-      query.$or = [{ name: { $regex: key, $options: "i" } }];
+    if (agentId) {
+      query.agentId = agentId;
     }
-
-    // Find total count of filters
-    const totalCount = await Filter.countDocuments(query);
-    // If no key is provided, return all agents
-    const filters = await Filter.find(query)
+    // Find total count of Blog
+    const totalCount = await Blog.countDocuments(query);
+    // If no key is provided, return all blogs
+    const blogs = await Blog.find(query)
+      .populate({
+        path: "agentId",
+      })
       .limit(parseInt(limit))
       .skip(skip)
-      .sort({ createdAt: -1 });
-    return res.status(200).json({ filters, totalCount });
+      .sort({ createdAt: -1 })
+      .exec();
+
+    return res.status(200).json({ blogs, totalCount });
   } catch (error) {
     // Handle errors
     console.error(error);
@@ -108,7 +92,6 @@ const getAllBlogs = catchAsync(async (req, res) => {
 
 module.exports = {
   createBlog,
-  getBlogsByAgent,
   getBlog,
   updateBlog,
   deleteBlog,
