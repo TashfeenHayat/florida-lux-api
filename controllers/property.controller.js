@@ -242,6 +242,12 @@ const getProperties = catchAsync(async (req, res) => {
 
     // If key or other query parameters are provided
     const properties = await Property.find(query)
+      .populate({
+        path: "agentId",
+      })
+      .populate({
+        path: "filters",
+      })
       .limit(parseInt(limit))
       .skip(skip)
       .sort({ createdAt: -1 })
