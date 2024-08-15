@@ -10,6 +10,9 @@ const pressSchema = mongoose.Schema(
     content: {
       type: String,
     },
+    photo: {
+      type: String,
+    },
   },
   {
     timestamps: true,
