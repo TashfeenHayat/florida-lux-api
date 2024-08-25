@@ -24,18 +24,17 @@ if (config.env !== 'test') {
 app.use(cors());
 app.options('*', cors());
 
-// parse json request body
-app.use(express.json());
+// parse json request body with increased size limit
+app.use(express.json({ limit: '100mb' }));
 
-// parse urlencoded request body
-app.use(express.urlencoded({ extended: true }));
+// parse urlencoded request body with increased size limit
+app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 
 // sanitize request data
 app.use(xss());
 app.use(mongoSanitize());
 
 // jwt authentication
-// app.use(passport.initialize());
 passport.use('jwt', jwtStrategy);
 
 // v1 api routes
