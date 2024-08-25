@@ -7,6 +7,9 @@ const pressSchema = mongoose.Schema(
       trim: true,
       required: true,
     },
+    cover: {
+      type: String,
+    },
     content: {
       type: String,
     },
