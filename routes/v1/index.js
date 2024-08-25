@@ -10,7 +10,7 @@ const uploadRoute = require("./upload.route");
 const inquiryRoute = require("./inquiry.route");
 const blogRoute = require("./blog.route");
 const pressRoute = require("./press.route");
-
+const reportRoute = require("./report.route")
 const router = express.Router();
 
 const defaultRoutes = [
@@ -53,7 +53,10 @@ const defaultRoutes = [
   {
     path: "/blog",
     route: blogRoute,
-  },
+  }, {
+    path: "/report",
+    route: reportRoute,
+  }
 ];
 
 defaultRoutes.forEach((route) => {
