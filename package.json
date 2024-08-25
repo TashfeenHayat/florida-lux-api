@@ -43,6 +43,7 @@
     "passport-jwt": "^4.0.1",
     "path": "^0.12.7",
     "request": "^2.88.2",
+    "simple-nodejs-app": "file:",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "validator": "^13.11.0",
