@@ -7,19 +7,15 @@ const pressSchema = mongoose.Schema(
       trim: true,
       required: true,
     },
+    content: {
+      type: String,
+    },
     cover: {
       type: String,
     },
-    content: {
-      type: String,
-    },file:{
-type: String,
-    },
-
-
-    photo: {
-      type: String,
-    },
+    file: {
+      type: String
+    }
   },
   {
     timestamps: true,
