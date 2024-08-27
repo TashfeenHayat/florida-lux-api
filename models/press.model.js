@@ -12,7 +12,11 @@ const pressSchema = mongoose.Schema(
     },
     content: {
       type: String,
+    },file:{
+type: String,
     },
+
+
     photo: {
       type: String,
     },

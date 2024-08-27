@@ -16,7 +16,7 @@ const uploadFile = catchAsync(async (req, res) => {
 
     // Upload file to Firebase Storage
     const bucket = admin.storage().bucket();
-    const file = bucket.file(`${Date.now()+req.file.originalname}`);
+    const file = bucket.file(`${Date.now() + req.file.originalname}`);
     const fileBuffer = req.file.buffer;
 
     await file.save(fileBuffer, {

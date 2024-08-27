@@ -2,6 +2,7 @@ const catchAsync = require("../utils/catchAsync");
 const { Press } = require("../models");
 
 const createPost = catchAsync(async (req, res) => {
+  console.log("posttttt")
   const { permissions } = req.user.roleId;
   const all = permissions.find((i) => i.module === "all");
 
@@ -70,7 +71,7 @@ const getAllPosts = catchAsync(async (req, res) => {
       .skip(skip)
       .sort({ createdAt: -1 })
       .exec();
-
+    console.log("posts", posts)
     return res.status(200).json({ posts, totalCount });
   } catch (error) {
     // Handle errors
