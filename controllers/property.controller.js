@@ -16,26 +16,30 @@ const createProperty = catchAsync(async (req, res) => {
   const { permissions } = req.user.roleId;
   const all = permissions.find((i) => i.module === "all");
 
-  if (all) {
-    const agent = await Agent.findById(req.body.agentId);
-
-    if (agent) {
-      const filters = await Filter.find({ _id: { $in: req.body.filters } });
-
-      if (filters.length > 0) {
-        await Property.create(req.body);
-        return res.status(200).send("Property created successfully");
-      } else {
-        return res.status(404).send("Filters not found");
-      }
-    } else {
-      return res.status(404).send("Agent not found");
-    }
-  } else {
-    return res
-      .status(403)
-      .send("Forbiden! You are not allowed to create a property");
+  if (!all) {
+    return res.status(403).send("Forbidden! You are not allowed to create a property");
   }
+
+  const primaryAgent = await Agent.findById(req.body.Primary_agentId);
+  if (!primaryAgent) {
+    return res.status(404).send("Primary agent not found");
+  }
+
+  if (req.body.Secondary_agentId) {
+    const secondaryAgent = await Agent.findById(req.body.Secondary_agentId);
+
+    if (!secondaryAgent) {
+      return res.status(404).send("Secondary agent not found");
+    }
+  }
+
+  const filters = await Filter.find({ _id: { $in: req.body.filters || [] } });
+  if (req.body.filters && filters.length !== req.body.filters.length) {
+    return res.status(404).send("Some filters not found");
+  }
+
+  const property = await Property.create(req.body);
+  return res.status(200).send({ message: "Property created successfully", property });
 });
 
 const getProperty = catchAsync(async (req, res) => {
@@ -44,55 +48,69 @@ const getProperty = catchAsync(async (req, res) => {
     property.mlsId = req.params.id;
   } else {
     property = await Property.findById(req.params.id)
-      .populate({
-        path: "agentId",
-      })
-      .populate({
-        path: "filters",
-      })
+      .populate("Primary_agentId")
+      .populate("Secondary_agentId")
+      .populate("filters")
       .exec();
   }
 
   if (property) {
     options.url = mlsApi + `properties/${property.mlsId}?count=true`;
 
-    request(options, async (error, response, body) => {
-      const mls = JSON.parse(body);
-
-      return res.status(200).send({ property, mls });
-    });
+    if (req.query.mlsOnly) {
+      options.url = `${mlsApi}properties/${property.mlsId}?count=true`;
+      request(options, async (error, response, body) => {
+        if (error) {
+          console.error(error);
+          return res.status(500).send("Error fetching MLS data");
+        }
+        const mls = JSON.parse(body);
+        return res.status(200).send({ property, mls });
+      });
+    } else {
+      return res.status(200).send({ property });
+    }
   } else {
     return res.status(404).send("Property not found");
   }
 });
 
+
 const updateProperty = catchAsync(async (req, res) => {
   const { permissions } = req.user.roleId;
   const all = permissions.find((i) => i.module === "all");
 
-  if (all) {
-    if (req.body.agentId) {
-      const agent = await Agent.findById(req.body.agentId);
-      if (!agent) {
-        return res.status(404).send("Agent not found");
-      }
-    }
-
-    if (req.body.filters && req.body.filters.length > 0) {
-      const filters = await Filter.find({ _id: { $in: req.body.filters } });
-      if (filters.length === 0) {
-        return res.status(404).send("Filters not found");
-      }
-    }
-
-    await Property.findByIdAndUpdate(req.params.id, req.body);
-
-    return res.status(200).send("Property updated successfully");
-  } else {
-    return res
-      .status(403)
-      .send("Forbiden! You are not allowed to create a property");
+  if (!all) {
+    return res.status(403).send("Forbidden! You are not allowed to update a property");
   }
+
+  if (req.body.Primary_agentId) {
+    const primaryAgent = await Agent.findById(req.body.Primary_agentId);
+    if (!primaryAgent) {
+      return res.status(404).send("Primary agent not found");
+    }
+  }
+
+  if (req.body.Secondary_agentId) {
+    const secondaryAgent = await Agent.findById(req.body.Secondary_agentId);
+    if (!secondaryAgent) {
+      return res.status(404).send("Secondary agent not found");
+    }
+  }
+
+  if (req.body.filters && req.body.filters.length > 0) {
+    const filters = await Filter.find({ _id: { $in: req.body.filters } });
+    if (filters.length !== req.body.filters.length) {
+      return res.status(404).send("Some filters not found");
+    }
+  }
+
+  const updatedProperty = await Property.findByIdAndUpdate(req.params.id, req.body, { new: true }).exec();
+  if (!updatedProperty) {
+    return res.status(404).send("Property not found");
+  }
+
+  return res.status(200).send({ message: "Property updated successfully", updatedProperty });
 });
 
 const getProperties = catchAsync(async (req, res) => {
@@ -120,14 +138,13 @@ const getProperties = catchAsync(async (req, res) => {
       fromPress,
       withoutPress,
     } = req.query;
+
     const query = {};
     const skip = (parseInt(page) - 1) * parseInt(limit);
-    query.$or = [];
-    query.$and = [];
 
     // Add search filters to the query object
     if (key) {
-      query.$or.push(
+      query.$or = [
         { name: { $regex: key, $options: "i" } },
         { neighborhood: { $regex: key, $options: "i" } },
         { status: { $regex: key, $options: "i" } },
@@ -136,8 +153,8 @@ const getProperties = catchAsync(async (req, res) => {
         { state: { $regex: key, $options: "i" } },
         { city: { $regex: key, $options: "i" } },
         { country: { $regex: key, $options: "i" } },
-        { zipCode: { $regex: key, $options: "i" } }
-      );
+        { zipCode: { $regex: key, $options: "i" } },
+      ];
     }
 
     if (status) {
@@ -145,7 +162,10 @@ const getProperties = catchAsync(async (req, res) => {
     }
 
     if (agentId) {
-      query.agentId = agentId;
+      query.$or = [
+        { Primary_agentId: agentId },
+        { Secondary_agentId: agentId }
+      ];
     }
 
     if (filterId) {
@@ -153,108 +173,55 @@ const getProperties = catchAsync(async (req, res) => {
     }
 
     if (minBedCount || maxBedCount) {
-      query.bedroomCount = { $gte: minBedCount, $lte: maxBedCount };
+      query.bedroomCount = { $gte: minBedCount || 0, $lte: maxBedCount || Infinity };
     }
 
     if (minBathCount || maxBathCount) {
-      query.bathCount = { $gte: minBathCount, $lte: maxBathCount };
+      query.bathCount = { $gte: minBathCount || 0, $lte: maxBathCount || Infinity };
     }
 
     if (minPrice || maxPrice) {
-      query.salePrice = { $gte: minPrice, $lte: maxPrice };
+      query.salePrice = { $gte: minPrice || 0, $lte: maxPrice || Infinity };
     }
 
     if (minArea || maxArea) {
-      query.area = { $gte: minArea, $lte: maxArea };
+      query.area = { $gte: minArea || 0, $lte: maxArea || Infinity };
     }
 
     if (fromPress) {
-      query.$and.push({ press: { $ne: null } });
+      query.press = { $ne: null };
     }
 
     if (withoutPress) {
-      query.$and.push({ press: { $exists: false } });
+      query.press = { $exists: false };
     }
 
     if (mlsOnly) {
-      options.qs = {};
-      if (key) {
-        options.qs = { q: key };
-      }
-      if (status) {
-        options.qs.status = status;
-      }
-      if (minBedCount) {
-        options.qs.minbeds = minBedCount;
-      }
-      if (maxBedCount) {
-        options.qs.maxbeds = maxBedCount;
-      }
-      if (minBathCount) {
-        options.qs.minbaths = minBathCount;
-      }
-      if (maxBathCount) {
-        options.qs.maxbaths = maxBathCount;
-      }
-      if (minPrice) {
-        options.qs.minprice = minPrice;
-      }
-      if (maxPrice) {
-        options.qs.maxprice = maxPrice;
-      }
-      if (minArea) {
-        options.qs.minarea = minArea;
-      }
-      if (maxArea) {
-        options.qs.maxarea = maxArea;
-      }
-      if (type) {
-        options.qs.type = type;
-      }
-      if (counties) {
-        options.qs.counties = counties;
-      }
-      if (state) {
-        options.qs.state = state;
-      }
-      if (cities) {
-        options.qs.cities = cities;
-      }
-      options.qs.limit = limit;
-      options.qs.offset = (page - 1) * limit;
-
-      options.url = mlsApi + "properties?count=true";
+      options.qs = { ...req.query, limit, offset: (page - 1) * limit };
+      options.url = `${mlsApi}properties?count=true`;
 
       return request(options, (error, response) => {
-        if (error) throw new Error(error);
+        if (error) {
+          console.error(error);
+          return res.status(500).send("Error fetching MLS data");
+        }
         const properties = JSON.parse(response.body);
-
-        return res
-          .status(200)
-          .json({ properties, totalCount: response.headers["x-total-count"] });
+        return res.status(200).json({ properties, totalCount: response.headers["x-total-count"] });
       });
     }
 
-    if (query["$or"].length === 0) delete query["$or"];
-    if (query["$and"].length === 0) delete query["$and"];
-    // Find total count of properties
     const totalCount = await Property.countDocuments(query);
-
-    // If key or other query parameters are provided
     const properties = await Property.find(query)
-      .populate({
-        path: "agentId",
-      })
-      .populate({
-        path: "filters",
-      })
+      .populate("Primary_agentId")
+      .populate("Secondary_agentId")
+      .populate("filters")
       .limit(parseInt(limit))
       .skip(skip)
       .sort({ createdAt: -1 })
       .exec();
+
     return res.status(200).json({ properties, totalCount });
   } catch (error) {
-    // Handle errors
     console.error(error);
     return res.status(500).json({ error: "Internal server error" });
   }
@@ -264,18 +231,15 @@ const deleteProperty = catchAsync(async (req, res) => {
   const { permissions } = req.user.roleId;
   const all = permissions.find((i) => i.module === "all");
 
-  if (all) {
-    const property = await Property.deleteOne({ _id: req.params.id });
+  if (!all) {
+    return res.status(403).send("Forbidden! You are not allowed to delete a property");
+  }
 
-    if (property.deletedCount > 0) {
-      return res.status(200).send("Property deleted successfully");
-    } else {
-      return res.status(404).send("Property not found");
-    }
+  const result = await Property.deleteOne({ _id: req.params.id });
+  if (result.deletedCount > 0) {
+    return res.status(200).send("Property deleted successfully");
   } else {
-    return res
-      .status(403)
-      .send("Forbiden! You are not allowed to create an agent");
+    return res.status(404).send("Property not found");
   }
 });
 
@@ -301,67 +265,20 @@ const getIdxProperties = catchAsync(async (req, res) => {
       cities,
     } = req.query;
 
-    options.qs = {};
-    if (key) {
-      options.qs = { q: key };
-    }
-    if (status) {
-      options.qs.status = status;
-    }
-    if (minBedCount) {
-      options.qs.minbeds = minBedCount;
-    }
-    if (maxBedCount) {
-      options.qs.maxbeds = maxBedCount;
-    }
-    if (minBathCount) {
-      options.qs.minbaths = minBathCount;
-    }
-    if (maxBathCount) {
-      options.qs.maxbaths = maxBathCount;
-    }
-    if (minPrice) {
-      options.qs.minprice = minPrice;
-    }
-    if (maxPrice) {
-      options.qs.maxprice = maxPrice;
-    }
-    if (minArea) {
-      options.qs.minarea = minArea;
-    }
-    if (maxArea) {
-      options.qs.maxarea = maxArea;
-    }
-    if (type) {
-      options.qs.type = type;
-    }
-    if (counties) {
-      options.qs.counties = counties;
-    }
-    if (state) {
-      options.qs.state = state;
-    }
-    if (cities) {
-      options.qs.cities = cities;
-    }
-    options.qs.limit = limit;
-    options.qs.offset = page * limit;
-    options.qs.idx = idx;
-
-    options.url = mlsApi + "properties?count=true";
+    options.qs = { ...req.query, limit, offset: page * limit, idx };
+    options.url = `${mlsApi}properties?count=true`;
 
     return request(options, (error, response) => {
-      if (error) throw new Error(error);
+      if (error) {
+        console.error(error);
+        return res.status(500).send("Error fetching IDX data");
+      }
       const properties = JSON.parse(response.body);
-
-      return res
-        .status(200)
-        .json({ properties, totalCount: response.headers["x-total-count"] });
+      return res.status(200).json({ properties, totalCount: response.headers["x-total-count"] });
     });
   } catch (error) {
-    // Handle errors
     console.error(error);
-    return res.status(500).json("Internal server error");
+    return res.status(500).send("Internal server error");
   }
 });
 
