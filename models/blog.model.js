@@ -16,8 +16,11 @@ const blogSchema = mongoose.Schema(
     content: {
       type: String,
       trim: true,
-      required: true,
+
     },
+    file: {
+      type: String
+    }
   },
   {
     timestamps: true,
