@@ -13,9 +13,7 @@ const filterSchema = mongoose.Schema(
     description: {
       type: String,
     },
-    condominiumOptions: {
-      type: String,
-    },
+
     photo: {
       type: String,
     },
