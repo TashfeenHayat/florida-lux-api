@@ -18,6 +18,9 @@ const blogSchema = mongoose.Schema(
       trim: true,
 
     },
+    cover: {
+      type: String,
+    },
     file: {
       type: String
     }

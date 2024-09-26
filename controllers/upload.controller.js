@@ -16,27 +16,24 @@ const uploadFile = catchAsync(async (req, res) => {
 
     // Upload file to Firebase Storage
     const bucket = admin.storage().bucket();
-    const file = bucket.file(`${Date.now() + req.file.originalname}`);
+    const file = bucket.file(`${Date.now()}_${req.file.originalname}`); // Include timestamp to avoid file name conflicts
     const fileBuffer = req.file.buffer;
 
     await file.save(fileBuffer, {
-      contentType: req.file.mimetype,
+      contentType: req.file.mimetype, // Dynamically set content type
       metadata: {
         metadata: {
-          // Add any additional metadata here
-          contentType: 'image/jpeg', // Specify the content type of the file
-          // Set ACL to make the file publicly accessible
-          acl: [
-            {
-              entity: 'allUsers',
-              role: 'READER'
-            }
-          ]
-        }
-      }
+          contentType: req.file.mimetype, // Dynamic content type for different file types
+        },
+      },
     });
+
     // Get the publicly accessible URL of the uploaded file
-    const [url] = await file.getSignedUrl({ action: 'read', expires: '01-01-2223' });
+    const [url] = await file.getSignedUrl({
+      action: 'read',
+      expires: '01-01-2223', // Adjust the expiration date if necessary
+    });
+
     res.status(200).send({ url });
   } catch (error) {
     console.error('Error uploading file to Firebase Storage:', error);
@@ -44,4 +41,4 @@ const uploadFile = catchAsync(async (req, res) => {
   }
 });
 
-module.exports = { uploadFile }
+module.exports = { uploadFile };
