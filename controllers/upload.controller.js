@@ -1,6 +1,6 @@
 const catchAsync = require('../utils/catchAsync');
 const admin = require('firebase-admin');
-const serviceAccount = require('../config/firebase-adminsdk-jsht2-f7a528f706.json'); // Path to your Firebase service account key file
+const serviceAccount = require('../config/firebase-adminsdk-jsht2-f7a528f706.json');
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
@@ -30,6 +30,7 @@ const uploadFile = catchAsync(async (req, res) => {
 
     // Get the publicly accessible URL of the uploaded file
     const [url] = await file.getSignedUrl({
+      mode: 'no-cors',
       action: 'read',
       expires: '01-01-2223', // Adjust the expiration date if necessary
     });

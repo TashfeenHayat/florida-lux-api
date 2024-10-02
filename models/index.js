@@ -8,3 +8,4 @@ module.exports.Inquiry = require("./inquiry.model");
 module.exports.Blog = require("./blog.model");
 module.exports.Press = require("./press.model");
 module.exports.Report = require("./report.model");
+module.exports.Testmonial = require("./Testmonial.model")

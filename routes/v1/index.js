@@ -11,6 +11,7 @@ const inquiryRoute = require("./inquiry.route");
 const blogRoute = require("./blog.route");
 const pressRoute = require("./press.route");
 const reportRoute = require("./report.route")
+const TestmonialRoute = require("./Testmonial.route")
 const router = express.Router();
 
 const defaultRoutes = [
@@ -56,6 +57,9 @@ const defaultRoutes = [
   }, {
     path: "/report",
     route: reportRoute,
+  }, {
+    path: "/Testimonial",
+    route: TestmonialRoute,
   }
 ];
 
