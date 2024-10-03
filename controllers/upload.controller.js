@@ -5,7 +5,7 @@ const serviceAccount = require('../config/firebase-adminsdk-jsht2-f7a528f706.jso
 // Initialize Firebase Admin SDK
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  storageBucket: 'yahyanbilal.appspot.com' // Replace with your storage bucket URL
+  storageBucket: 'yahyanbilal.appspot.com'
 });
 
 const uploadFile = catchAsync(async (req, res) => {
