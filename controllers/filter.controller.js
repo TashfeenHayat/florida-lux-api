@@ -4,13 +4,13 @@ const catchAsync = require("../utils/catchAsync");
 const { Filter } = require("../models");
 
 const createFilter = catchAsync(async (req, res) => {
-  const { name, code, description, photo } = req.body;
+  const { name, code, description, photo, geo } = req.body;
 
   const { permissions } = req.user.roleId;
   const all = permissions.find((i) => i.module === "all");
 
   if (all) {
-    await Filter.create({ name, code, description, photo });
+    await Filter.create({ name, code, description, photo, geo });
 
     return res.status(200).send("Filter created successfully");
   } else {
