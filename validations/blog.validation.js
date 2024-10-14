@@ -5,7 +5,7 @@ const createBlog = {
     title: Joi.string().trim().required(),
     content: Joi.string().trim().allow('').optional(),
     agentId: Joi.string().trim().required(),
-    cover: Joi.string().trim().allow('',
+    cover: Joi.string().trim().allow(''),
     file: Joi.string().trim().allow('').optional(),
   }),
 };
