@@ -13,7 +13,9 @@ const filterSchema = mongoose.Schema(
     description: {
       type: String,
     },
-
+    other_description: {
+      type: String,
+    },
     photo: {
       type: String,
     },

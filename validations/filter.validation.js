@@ -7,5 +7,5 @@ const createFilter = {
 };
 
 module.exports = {
-    createFilter
+  createFilter
 };
