@@ -1,11 +1,11 @@
 const catchAsync = require('../utils/catchAsync');
 const admin = require('firebase-admin');
-const serviceAccount = require('../config/firebase-adminsdk-jsht2-f7a528f706.json');
+const serviceAccount = require('../config/florida-lux-e66c2-firebase-adminsdk-6idfq-b260585982.json');
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  storageBucket: 'yahyanbilal.appspot.com'
+  storageBucket: 'florida-lux-e66c2.firebasestorage.app'
 });
 
 const uploadFile = catchAsync(async (req, res) => {
