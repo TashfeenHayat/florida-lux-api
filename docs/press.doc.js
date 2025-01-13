@@ -5,8 +5,8 @@
  *     Press:
  *       type: object
  *       properties:
- *         title:
- *           type: string
+ *       title:
+ *         type: string
  *           description: Name of the Press
  *           trim: true
  *           required: true
