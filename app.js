@@ -22,7 +22,6 @@ if (config.env !== 'test') {
 
 // enable cors
 app.use(cors());
-
 app.options('*', cors());
 
 // parse json request body with increased size limit
