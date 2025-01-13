@@ -22,9 +22,7 @@ if (config.env !== 'test') {
 
 // enable cors
 app.use(cors());
-app.use(cors({
-  origin: 'https://www.floridaluxurious.com'
-}))
+
 app.options('*', cors());
 
 // parse json request body with increased size limit
