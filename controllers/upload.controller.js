@@ -5,7 +5,7 @@ const serviceAccount = require('../config/florida-lux-e66c2-firebase-adminsdk-6i
 // Initialize Firebase Admin SDK
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  storageBucket: "florida-lux-e66c2.firebasestorage.app",
+  storageBucket: "yahyanbilal.appspot.com",
 });
 
 const uploadFile = catchAsync(async (req, res) => {
