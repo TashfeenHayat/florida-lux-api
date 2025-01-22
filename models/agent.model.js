@@ -21,8 +21,23 @@ const agentSchema = mongoose.Schema(
       type: String,
     },
     phoneNumber: {
-      type: String,
+      areaCode: {
+        type: String,
+        length: 3,
+      },
+      countryCode: {
+        type: Number,
+      },
+      isoCode: {
+        type: String,
+        length: 2,
+      },
+      phoneNumber: {
+        type: String,
+        length: 6,
+      },
     },
+
     address: {
       addressLine1: {
         type: String,
