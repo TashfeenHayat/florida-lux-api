@@ -141,19 +141,31 @@ const getProperties = catchAsync(async (req, res) => {
 
     const query = {};
     const skip = (parseInt(page) - 1) * parseInt(limit);
-
+let searchTerm = key ? key.trim().replace(/\s+/g, ' ') : '';
     // Add search filters to the query object
-    if (key) {
+    if (searchTerm) {
       query.$or = [
-        { name: { $regex: key, $options: "i" } },
-        { neighborhood: { $regex: key, $options: "i" } },
-        { status: { $regex: key, $options: "i" } },
-        { addressLine1: { $regex: key, $options: "i" } },
-        { addressLine2: { $regex: key, $options: "i" } },
-        { state: { $regex: key, $options: "i" } },
-        { city: { $regex: key, $options: "i" } },
-        { country: { $regex: key, $options: "i" } },
-        { zipCode: { $regex: key, $options: "i" } },
+        // Match individual fields
+        { name: { $regex: searchTerm, $options: "i" } },
+        { neighborhood: { $regex: searchTerm, $options: "i" } },
+        { status: { $regex: searchTerm, $options: "i" } },
+        { state: { $regex: searchTerm, $options: "i" } },
+        { city: { $regex: searchTerm, $options: "i" } },
+        { country: { $regex: searchTerm, $options: "i" } },
+        { zipCode: { $regex: searchTerm, $options: "i" } },
+        { addressLine1: { $regex: searchTerm, $options: "i" } },
+        { addressLine2: { $regex: searchTerm, $options: "i" } },
+
+        // Match address1 + address2 + city + country + zip combined
+        {
+          $expr: {
+            $regexMatch: {
+              input: { $concat: ["$addressLine1", " ", "$addressLine2", " ", "$city", " ", "$country", " ", "$zipCode", "", "name"] },
+              regex: searchTerm,
+              options: "i"
+            }
+          }
+        }
       ];
     }
 
