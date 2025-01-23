@@ -13,7 +13,7 @@ router
 router.route('/login').post(userController.loginUser);
 
 router.route('/profile').get(auth(), userController.getUser);
-
+router.route('/logout').post(userController.logoutUser);
 router
   .route('/')
   .get(validate(userValidation.createUser), userController.createUser);  
