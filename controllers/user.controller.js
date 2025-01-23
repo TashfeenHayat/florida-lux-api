@@ -105,7 +105,22 @@ const resetPassword = catchAsync(async (req, res) => {
 const getAllUsers = catchAsync(async (req, res) => {
 
 });
+const logoutUser = catchAsync(async (req, res) => {
+  const { token } = req.body;
 
+  if (!token) {
+    return res.status(400).json({ message: 'Token is required' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    await Token.deleteOne({ userId: decoded.userId, token });
+
+    return res.status(200).json({ message: 'Logged out successfully' });
+  } catch (error) {
+    return res.status(400).json({ message: 'Invalid token' });
+  }
+});
 module.exports = {
   createUser,
   getUsers,
@@ -115,5 +130,5 @@ module.exports = {
   updatePassword,
   forgotPassword,
   resetPassword,
-  getAllUsers
+  getAllUsers, logoutUser
 };
