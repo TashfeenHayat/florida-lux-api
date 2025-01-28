@@ -42,8 +42,42 @@ const createProperty = catchAsync(async (req, res) => {
   return res.status(200).send({ message: "Property created successfully", property });
 });
 
+// const getProperty = catchAsync(async (req, res) => {
+//   let property = {};
+//   if (req.query.mlsOnly) {
+//     property.mlsId = req.params.id;
+//   } else {
+//     property = await Property.findById(req.params.id)
+//       .populate("Primary_agentId")
+//       .populate("Secondary_agentId")
+//       .populate("filters")
+//       .exec();
+//   }
+
+//   if (property) {
+//     options.url = mlsApi + `properties/${property.mlsId}?count=true`;
+
+//     if (req.query.mlsOnly) {
+//       options.url = `${mlsApi}properties/${property.mlsId}?count=true`;
+//       request(options, async (error, response, body) => {
+//         if (error) {
+//           console.error(error);
+//           return res.status(500).send("Error fetching MLS data");
+//         }
+//         const mls = JSON.parse(body);
+//         return res.status(200).send({ property, mls });
+//       });
+//     } else {
+//       return res.status(200).send({ property });
+//     }
+//   } else {
+//     return res.status(404).send("Property not found");
+//   }
+// });
+
 const getProperty = catchAsync(async (req, res) => {
   let property = {};
+
   if (req.query.mlsOnly) {
     property.mlsId = req.params.id;
   } else {
@@ -55,26 +89,35 @@ const getProperty = catchAsync(async (req, res) => {
   }
 
   if (property) {
-    options.url = mlsApi + `properties/${property.mlsId}?count=true`;
-
+    options.url = `${mlsApi}properties/${property.mlsId}?count=true`;
+    console.log("ali", req.query.mlsOnly)
     if (req.query.mlsOnly) {
-      options.url = `${mlsApi}properties/${property.mlsId}?count=true`;
+
       request(options, async (error, response, body) => {
         if (error) {
           console.error(error);
           return res.status(500).send("Error fetching MLS data");
         }
-        const mls = JSON.parse(body);
+
+        let mls = JSON.parse(body);
+
+        // Sort the data by price in descending order
+        if (mls && Array.isArray(mls)) {
+          mls.sort((a, b) => b.price - a.price);
+        }
+
         return res.status(200).send({ property, mls });
       });
     } else {
-      return res.status(200).send({ property });
+      console.log("ali")
+      return res.status(200).send({
+        property: Array.isArray(property) ? property.sort((a, b) => b.price - a.price) : property
+      });
     }
   } else {
     return res.status(404).send("Property not found");
   }
 });
-
 
 const updateProperty = catchAsync(async (req, res) => {
   const { permissions } = req.user.roleId;
@@ -115,37 +158,21 @@ const updateProperty = catchAsync(async (req, res) => {
 
 const getProperties = catchAsync(async (req, res) => {
   try {
+    console.log("Fetching properties...");
     const {
-      key,
-      limit = 10,
-      page = 1,
-      status,
-      agentId,
-      filterId,
-      minBedCount,
-      maxBedCount,
-      minBathCount,
-      maxBathCount,
-      minPrice,
-      maxPrice,
-      minArea,
-      maxArea,
-      counties,
-      type,
-      state,
-      cities,
-      mlsOnly,
-      fromPress,
-      withoutPress,
+      key, status, agentId, filterId,
+      minBedCount, maxBedCount, minBathCount, maxBathCount,
+      minPrice, maxPrice, minArea, maxArea, countries, type,
+      state, cities, mlsOnly, fromPress, withoutPress,
     } = req.query;
 
     const query = {};
-    const skip = (parseInt(page) - 1) * parseInt(limit);
-let searchTerm = key ? key.trim().replace(/\s+/g, ' ') : '';
-    // Add search filters to the query object
+
+    // Normalize the search term
+    let searchTerm = key ? key.trim().replace(/\s+/g, ' ') : '';
+
     if (searchTerm) {
       query.$or = [
-        // Match individual fields
         { name: { $regex: searchTerm, $options: "i" } },
         { neighborhood: { $regex: searchTerm, $options: "i" } },
         { status: { $regex: searchTerm, $options: "i" } },
@@ -154,62 +181,23 @@ let searchTerm = key ? key.trim().replace(/\s+/g, ' ') : '';
         { country: { $regex: searchTerm, $options: "i" } },
         { zipCode: { $regex: searchTerm, $options: "i" } },
         { addressLine1: { $regex: searchTerm, $options: "i" } },
-        { addressLine2: { $regex: searchTerm, $options: "i" } },
-
-        // Match address1 + address2 + city + country + zip combined
-        {
-          $expr: {
-            $regexMatch: {
-              input: { $concat: ["$addressLine1", " ", "$addressLine2", " ", "$city", " ", "$country", " ", "$zipCode", "", "name"] },
-              regex: searchTerm,
-              options: "i"
-            }
-          }
-        }
+        { addressLine2: { $regex: searchTerm, $options: "i" } }
       ];
     }
 
-    if (status) {
-      query.status = status;
-    }
-
-    if (agentId) {
-      query.$or = [
-        { Primary_agentId: agentId },
-        { Secondary_agentId: agentId }
-      ];
-    }
-
-    if (filterId) {
-      query.filters = { $in: [filterId] };
-    }
-
-    if (minBedCount || maxBedCount) {
-      query.bedroomCount = { $gte: minBedCount || 0, $lte: maxBedCount || Infinity };
-    }
-
-    if (minBathCount || maxBathCount) {
-      query.bathCount = { $gte: minBathCount || 0, $lte: maxBathCount || Infinity };
-    }
-
-    if (minPrice || maxPrice) {
-      query.salePrice = { $gte: minPrice || 0, $lte: maxPrice || Infinity };
-    }
-
-    if (minArea || maxArea) {
-      query.area = { $gte: minArea || 0, $lte: maxArea || Infinity };
-    }
-
-    if (fromPress) {
-      query.press = { $ne: null };
-    }
-
-    if (withoutPress) {
-      query.press = { $exists: false };
-    }
+    // Apply filters
+    if (status) query.status = status;
+    if (agentId) query.$or = [{ Primary_agentId: agentId }, { Secondary_agentId: agentId }];
+    if (filterId) query.filters = { $in: [filterId] };
+    if (minBedCount || maxBedCount) query.bedroomCount = { $gte: minBedCount || 0, $lte: maxBedCount || Infinity };
+    if (minBathCount || maxBathCount) query.bathCount = { $gte: minBathCount || 0, $lte: maxBathCount || Infinity };
+    if (minPrice || maxPrice) query.salePrice = { $gte: minPrice || 0, $lte: maxPrice || Infinity };
+    if (minArea || maxArea) query.area = { $gte: minArea || 0, $lte: maxArea || Infinity };
+    if (fromPress) query.press = { $ne: null };
+    if (withoutPress) query.press = { $exists: false };
 
     if (mlsOnly) {
-      options.qs = { ...req.query, limit, offset: (page - 1) * limit };
+      options.qs = { ...req.query };
       options.url = `${mlsApi}properties?count=true`;
 
       return request(options, (error, response) => {
@@ -222,22 +210,35 @@ let searchTerm = key ? key.trim().replace(/\s+/g, ' ') : '';
       });
     }
 
-    const totalCount = await Property.countDocuments(query);
-    const properties = await Property.find(query)
+    // **STEP 1: Fetch all properties without limit**
+    let allProperties = await Property.find(query)
       .populate("Primary_agentId")
       .populate("Secondary_agentId")
       .populate("filters")
-      .limit(parseInt(limit))
-      .skip(skip)
-      .sort({ createdAt: -1 })
       .exec();
 
-    return res.status(200).json({ properties, totalCount });
+    // Sort properties by sale price (or any other criteria)
+    allProperties.sort((a, b) => b.salePrice - a.salePrice); // Sort in descending order by price
+    // console.log("First 5 properties:", allProperties.slice(0, 5));
+
+    // Return all properties without pagination
+    return res.status(200).json({ properties: allProperties, totalCount: allProperties.length });
+
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal server error" });
   }
 });
+
+
+
+
+
+
+
+
+
+
 
 const deleteProperty = catchAsync(async (req, res) => {
   const { permissions } = req.user.roleId;
@@ -257,6 +258,7 @@ const deleteProperty = catchAsync(async (req, res) => {
 
 const getIdxProperties = catchAsync(async (req, res) => {
   try {
+    console.log("req.query");
     const {
       idx = "ignore",
       key,
