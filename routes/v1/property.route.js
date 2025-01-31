@@ -16,7 +16,7 @@ router
   .get(propertyController.getProperties);
 
 router.route("/idx").get(propertyController.getIdxProperties);
-
+router.route("/search").get(propertyController.getSearchSuggestions);
 router
   .route("/:id")
   .patch(
