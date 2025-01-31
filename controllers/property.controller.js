@@ -181,7 +181,26 @@ const getProperties = catchAsync(async (req, res) => {
         { country: { $regex: searchTerm, $options: "i" } },
         { zipCode: { $regex: searchTerm, $options: "i" } },
         { addressLine1: { $regex: searchTerm, $options: "i" } },
-        { addressLine2: { $regex: searchTerm, $options: "i" } }
+        { addressLine2: { $regex: searchTerm, $options: "i" } },
+        {
+          features: {
+            $elemMatch: {
+              $or: [
+                { name: { $regex: searchTerm, $options: "i" } }, // Search within the "name" field of features
+                { description: { $regex: searchTerm, $options: "i" } } // Search within the "description" field of features
+              ]
+            }
+          }
+        },
+        {
+          $expr: {
+            $regexMatch: {
+              input: { $concat: ["$addressLine1", " ", "$addressLine2"] },
+              regex: ".*" + searchTerm + ".*", // Partial match for address fields
+              options: "i"
+            }
+          }
+        }
       ];
     }
 
@@ -226,6 +245,55 @@ const getProperties = catchAsync(async (req, res) => {
 
   } catch (error) {
     console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+const getSearchSuggestions = catchAsync(async (req, res) => {
+  try {
+    const { key } = req.query;
+
+    if (!key) return res.json([]); // If no search key, return empty array
+
+    let searchTerm = key.trim().replace(/\s+/g, " "); // Normalize search
+
+    // Use a regex search with i (case-insensitive) and `.*` for partial matches anywhere in the string
+    const suggestions = await Property.find(
+      {
+        $or: [
+          { name: { $regex: ".*" + searchTerm + ".*", $options: "i" } }, // Partial match for name
+          { neighborhood: { $regex: ".*" + searchTerm + ".*", $options: "i" } }, // Partial match for neighborhood
+          { city: { $regex: ".*" + searchTerm + ".*", $options: "i" } }, // Partial match for city
+          { state: { $regex: ".*" + searchTerm + ".*", $options: "i" } }, // Partial match for state
+          { country: { $regex: ".*" + searchTerm + ".*", $options: "i" } }, // Partial match for country
+          { zipCode: { $regex: ".*" + searchTerm + ".*", $options: "i" } }, // Partial match for zipCode
+          { status: { $regex: ".*" + searchTerm + ".*", $options: "i" } }, // Partial match for status
+          {
+            features: {
+              $elemMatch: {
+                $or: [
+                  { name: { $regex: ".*" + searchTerm + ".*", $options: "i" } }, // Partial match for features name
+                  { description: { $regex: ".*" + searchTerm + ".*", $options: "i" } } // Partial match for features description
+                ]
+              }
+            }
+          },
+          {
+            $expr: {
+              $regexMatch: {
+                input: { $concat: ["$addressLine1", " ", "$addressLine2"] },
+                regex: ".*" + searchTerm + ".*", // Partial match for address fields
+                options: "i"
+              }
+            }
+          }
+        ]
+      },
+      "name neighborhood city state country zipCode status featured addressLine1 addressLine2 features" // Return only required fields including "features"
+    ).limit(10); // Limit to 10 suggestions
+
+    return res.status(200).json({ properties: suggestions });
+  } catch (error) {
+    console.error("Error fetching search suggestions:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -303,4 +371,5 @@ module.exports = {
   getProperties,
   deleteProperty,
   getIdxProperties,
+  getSearchSuggestions
 };
