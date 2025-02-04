@@ -15,13 +15,20 @@ const propertySchema = new Schema(
     description: {
       type: String,
     },
-   
+
     status: {
       type: String,
       default: "incoming",
       enum: ["for_sale", "sold", "incoming", "for_rent", "featured"],
     },
     media: [
+      {
+        smUrl: { type: String },
+        mdUrl: { type: String },
+        xlUrl: { type: String },
+      },
+    ],
+    video: [
       {
         smUrl: { type: String },
         mdUrl: { type: String },
