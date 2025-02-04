@@ -15,6 +15,14 @@ const createProperty = {
         xlUrl: Joi.string(),
       })
     ),
+    video: Joi.array().items(
+      Joi.object({
+        smUrl: Joi.string(),
+        mdUrl: Joi.string(),
+        xlUrl: Joi.string(),
+      })
+    ),
+
     neighborhood: Joi.string(),
     addressLine1: Joi.string(),
     addressLine2: Joi.string(),
@@ -65,6 +73,13 @@ const updateProperty = {
       .valid("for_sale", "sold", "incoming", "for_rent")
       .default("incoming"),
     media: Joi.array().items(
+      Joi.object({
+        smUrl: Joi.string(),
+        mdUrl: Joi.string(),
+        xlUrl: Joi.string(),
+      })
+    ),
+    video: Joi.array().items(
       Joi.object({
         smUrl: Joi.string(),
         mdUrl: Joi.string(),
