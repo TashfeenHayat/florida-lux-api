@@ -60,7 +60,7 @@ const propertySchema = new Schema(
     flooring: { type: String },
     cooling: { type: String },
     heating: { type: String },
-    fireplace: { type: String },
+    waterfront: { type: String },
     style: { type: String },
     pool: { type: String },
     parking: { type: String },
