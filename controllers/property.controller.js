@@ -1,6 +1,7 @@
 const request = require("request");
 const catchAsync = require("../utils/catchAsync");
 const { Agent, Filter, Property } = require("../models");
+const { Console } = require("winston/lib/winston/transports");
 const mlsApi = "https://api.simplyrets.com/";
 const mlsKey = "Basic " + btoa("mweis_18f15548" + ":" + "3346216f22164a64");
 
@@ -15,7 +16,7 @@ let options = {
 const createProperty = catchAsync(async (req, res) => {
   const { permissions } = req.user.roleId;
   const all = permissions.find((i) => i.module === "all");
-
+  console.log(req.body)
   if (!all) {
     return res.status(403).send("Forbidden! You are not allowed to create a property");
   }
@@ -39,7 +40,7 @@ const createProperty = catchAsync(async (req, res) => {
   }
 
   const property = await Property.create(req.body);
-  return res.status(200).send({ message: "Property created successfully", property });
+  return res.status(200).send({ message: "Property created successfully", property, propertyId: property._id });
 });
 
 // const getProperty = catchAsync(async (req, res) => {
@@ -153,7 +154,7 @@ const updateProperty = catchAsync(async (req, res) => {
     return res.status(404).send("Property not found");
   }
 
-  return res.status(200).send({ message: "Property updated successfully", updatedProperty });
+  return res.status(200).send({ message: "Property updated successfully", updatedProperty, propertyId: updateProperty._id });
 });
 
 const getProperties = catchAsync(async (req, res) => {
@@ -297,17 +298,6 @@ const getSearchSuggestions = catchAsync(async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 });
-
-
-
-
-
-
-
-
-
-
-
 const deleteProperty = catchAsync(async (req, res) => {
   const { permissions } = req.user.roleId;
   const all = permissions.find((i) => i.module === "all");
