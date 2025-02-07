@@ -23,7 +23,7 @@ const createProperty = {
       })
     ),
 
-    neighborhood: Joi.string().allow(),
+    neighborhood: Joi.string().allow(''),
     addressLine1: Joi.string(),
     addressLine2: Joi.string(),
     state: Joi.string(),
@@ -86,7 +86,7 @@ const updateProperty = {
         xlUrl: Joi.string(),
       })
     ),
-    neighborhood: Joi.string().allow(),
+    neighborhood: Joi.string().allow(''),
     addressLine1: Joi.string(),
     addressLine2: Joi.string(),
     state: Joi.string(),
