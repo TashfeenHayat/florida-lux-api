@@ -107,6 +107,7 @@ const updateProperty = {
     tags: Joi.array().items(Joi.string()),
     reference: Joi.string(),
     mlsId: Joi.any(),
+    firebase:Joi.string(),
     yearBuilt: Joi.string(),
     foundation: Joi.string(),
     stories: Joi.string(),
