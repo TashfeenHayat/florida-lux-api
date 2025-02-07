@@ -82,6 +82,7 @@ const propertySchema = new Schema(
       ref: "Agent",
       required: true,
     },
+  fireplace:{type:String},
     filters: [
       {
         type: Schema.Types.ObjectId,
