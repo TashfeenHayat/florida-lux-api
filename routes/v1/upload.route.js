@@ -13,5 +13,6 @@ const upload = multer({ storage });
 
 router.route('/')
     .post(auth(), upload.single('file'), uploadController.uploadFile);
-
+router.route('/bulk')
+    .post(auth(), upload.array('files', 150), uploadController.BulkuploadFiles)
 module.exports = router;
