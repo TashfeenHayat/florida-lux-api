@@ -81,7 +81,7 @@ const BulkuploadFiles = catchAsync(async (req, res) => {
       uploadedUrls.push(url); 
     }
 
-    console.log({ urls: uploadedUrls })
+
 
   
     res.status(200).send({ urls: uploadedUrls });
