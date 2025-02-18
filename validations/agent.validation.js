@@ -10,7 +10,7 @@ const createAgent = {
       areaCode: Joi.string().length(3).required(), // area code should be a 3-digit string
       countryCode: Joi.number().required(), // country code should be a number
       isoCode: Joi.string().length(2).required(), // ISO code should be a 2-letter string
-      phoneNumber: Joi.string().length(6).required(), // phone number should be a 6-digit string
+      phoneNumber: Joi.string().required(), // phone number should be a 6-digit string
     }),
     address: Joi.object({
       addressLine1: Joi.string(),
