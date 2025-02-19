@@ -9,11 +9,7 @@ const createProperty = {
       .valid("for_sale", "sold", "incoming", "for_rent", "featured")
       .default("incoming"),
     media: Joi.array().items(
-      Joi.object({
-        smUrl: Joi.string(),
-        mdUrl: Joi.string(),
-        xlUrl: Joi.string(),
-      })
+      Joi.object()
     ),
     video: Joi.array().items(
       Joi.object({
@@ -23,7 +19,7 @@ const createProperty = {
       })
     ),
 
-    neighborhood: Joi.string().allow(''),
+    neighborhood: Joi.string(),
     addressLine1: Joi.string(),
     addressLine2: Joi.string(),
     state: Joi.string(),
@@ -73,11 +69,7 @@ const updateProperty = {
       .valid("for_sale", "sold", "incoming", "for_rent")
       .default("incoming"),
     media: Joi.array().items(
-      Joi.object({
-        smUrl: Joi.string(),
-        mdUrl: Joi.string(),
-        xlUrl: Joi.string(),
-      })
+      Joi.object()
     ),
     video: Joi.array().items(
       Joi.object({
@@ -86,7 +78,7 @@ const updateProperty = {
         xlUrl: Joi.string(),
       })
     ),
-    neighborhood: Joi.string().allow(''),
+    neighborhood: Joi.string(),
     addressLine1: Joi.string(),
     addressLine2: Joi.string(),
     state: Joi.string(),
@@ -107,7 +99,6 @@ const updateProperty = {
     tags: Joi.array().items(Joi.string()),
     reference: Joi.string(),
     mlsId: Joi.any(),
-    fireplace:Joi.string(),
     yearBuilt: Joi.string(),
     foundation: Joi.string(),
     stories: Joi.string(),
