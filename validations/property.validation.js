@@ -45,7 +45,7 @@ const createProperty = {
     cooling: Joi.string(),
     heating: Joi.string(),
     waterfront: Joi.string().allow(''),
-    fireplace:Joi.string().allow('')
+    fireplace:Joi.string().allow(''),
     style: Joi.string(),
     pool: Joi.string(),
     parking: Joi.string(),
