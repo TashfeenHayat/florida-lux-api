@@ -6,7 +6,7 @@ const createProperty = {
     code: Joi.string(),
     description: Joi.string(),
     status: Joi.string()
-      .valid("for_sale", "sold", "incoming", "for_rent", "featured")
+      .valid("for_sale", "sold", "incoming", "for_rent", "featured", "unavailable")
       .default("incoming"),
     media: Joi.array().items(
       Joi.object()
@@ -32,9 +32,9 @@ const createProperty = {
     areaUnit: Joi.string(),
     leasePeriod: Joi.string(),
     salePrice: Joi.string(),
-    reducedPrice: Joi.string().allow(''),
+    reducedPrice: Joi.string(),
     currency: Joi.string(),
-    visitHours: Joi.string().allow(''),
+    visitHours: Joi.string(),
     bedroomCount: Joi.string(),
     bathCount: Joi.string(),
     yearBuilt: Joi.string(),
@@ -66,7 +66,7 @@ const updateProperty = {
     code: Joi.string(),
     description: Joi.string(),
     status: Joi.string()
-      .valid("for_sale", "sold", "incoming", "for_rent")
+      .valid("for_sale", "sold", "incoming", "for_rent", "unavailable")
       .default("incoming"),
     media: Joi.array().items(
       Joi.object()
@@ -91,9 +91,9 @@ const updateProperty = {
     areaUnit: Joi.string(),
     leasePeriod: Joi.string(),
     salePrice: Joi.string(),
-    reducedPrice: Joi.string(),
+    reducedPrice: Joi.string().allow(''),
     currency: Joi.string(),
-    visitHours: Joi.string(),
+    visitHours: Joi.string().allow(''),
     bedroomCount: Joi.string(),
     bathCount: Joi.string(),
     tags: Joi.array().items(Joi.string()),
