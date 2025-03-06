@@ -12,11 +12,7 @@ const createProperty = {
       Joi.object()
     ),
     video: Joi.array().items(
-      Joi.object({
-        smUrl: Joi.string(),
-        mdUrl: Joi.string(),
-        xlUrl: Joi.string(),
-      })
+      Joi.object()
     ),
 
     neighborhood: Joi.string(),
@@ -73,11 +69,7 @@ const updateProperty = {
       Joi.object()
     ),
     video: Joi.array().items(
-      Joi.object({
-        smUrl: Joi.string(),
-        mdUrl: Joi.string(),
-        xlUrl: Joi.string(),
-      })
+      Joi.object()
     ),
     neighborhood: Joi.string(),
     addressLine1: Joi.string(),
