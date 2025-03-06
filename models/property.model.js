@@ -30,11 +30,12 @@ const propertySchema = new Schema(
       }
     ],
     video: [
-      {
-        smUrl: { type: String },
-        mdUrl: { type: String },
-        xlUrl: { type: String },
-      },
+     {
+        name: String, // Media name (e.g., image name or file name)
+        smUrl: String, // Small resolution URL
+        mdUrl: String, // Medium resolution URL
+        xlUrl: String, // Extra-large resolution URL
+      }
     ],
     neighborhood: { type: String },
     addressLine1: { type: String },
