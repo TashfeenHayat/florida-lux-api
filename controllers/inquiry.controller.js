@@ -23,7 +23,7 @@ const createInquiry = catchAsync(async (req, res) => {
   const { firstName, lastName, email, message } = req.body;
   // Define email content
  let mailOptions = {
-  from: `"${firstName} ${lastName}" ${email}`, // ✅ valid MAIL FROM
+  from: `"${firstName} ${lastName}" <${email}>`, // ✅ valid MAIL FROM
   to: "Info@FloridaLuxurious.com", // you are receiving the message
   replyTo: email, // ✅ so you can reply directly to the sender
   subject: "New Contact Us Form Submission",
