@@ -11,7 +11,7 @@ const { Inquiry } = require("../models");
 //   },
 // });
 let transporter = nodemailer.createTransport({
-   host: "smtpout.secureserver.net",
+  host: "smtpout.secureserver.net",
   port: 587,
   secure: false, // true for 465, false for other ports
   auth: {
