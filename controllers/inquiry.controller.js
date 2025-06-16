@@ -3,14 +3,22 @@ const catchAsync = require("../utils/catchAsync");
 const { Inquiry } = require("../models");
 
 // Create a transporter object using SMTP transport
+// let transporter = nodemailer.createTransport({
+//   service: "gmail", // true for 465, false for other ports
+//   auth: {
+//     user: "floridaluxurioussubmissions@gmail.com",
+//     pass: "uofc trdb nceu bjzv",
+//   },
+// });
 let transporter = nodemailer.createTransport({
-  service: "gmail", // true for 465, false for other ports
+   host: "smtpout.secureserver.net",
+  port: 587,
+  secure: false, // true for 465, false for other ports
   auth: {
-    user: "floridaluxurioussubmissions@gmail.com",
-    pass: "uofc trdb nceu bjzv",
+    user: "Info@FloridaLuxurious.com",
+    pass: "6R8a4M&zD#XpkE3N!Z#W",
   },
-});
-
+}); 
 const createInquiry = catchAsync(async (req, res) => {
   const { firstName, lastName, email, message } = req.body;
   // Define email content
@@ -18,7 +26,7 @@ const createInquiry = catchAsync(async (req, res) => {
     from: `"${firstName} ${lastName}"`,
     to: "Info@FloridaLuxurious.com",
     subject: "New Contact Us Form Submission",
-    text: `Name: ${firstName + lastName}\nEmail: ${email}\nMessage: ${message}`,
+    text: `Name: ${firstName +  + lastName}\nEmail: ${email}\nMessage: ${message}`,
   };
 
   // Send the email
