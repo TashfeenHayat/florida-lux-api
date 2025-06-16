@@ -4,9 +4,7 @@ const { Inquiry } = require("../models");
 
 // Create a transporter object using SMTP transport
 let transporter = nodemailer.createTransport({
-   host: "smtp.gmail.com",
-   port: 465,
-  secure: true, // true for 465, false for other ports
+  service: "gmail", // true for 465, false for other ports
   auth: {
     user: "floridaluxurioussubmissions@gmail.com",
     pass: "FLPsubmissions123",
