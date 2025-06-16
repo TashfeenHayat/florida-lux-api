@@ -20,14 +20,14 @@ let transporter = nodemailer.createTransport({
 //   },
 // }); 
 const createInquiry = catchAsync(async (req, res) => {
-  const { firstName, lastName, email, message } = req.body;
+  const { firstName, lastName, email, message,phoneNumber } = req.body;
   // Define email content
  let mailOptions = {
   from: `"${firstName} ${lastName}" <${email}>`, // ✅ valid MAIL FROM
   to: "Info@FloridaLuxurious.com", // you are receiving the message
   replyTo: email, // ✅ so you can reply directly to the sender
   subject: "New Contact Us Form Submission",
-  text: `Name: ${firstName} ${lastName}\nEmail: ${email}\nMessage: ${message}`,
+  text: `Name: ${firstName} ${lastName}\nEmail: ${email} \nPhoneNumber:${phoneNumber} \nMessage: ${message}`,
 };
 
 
