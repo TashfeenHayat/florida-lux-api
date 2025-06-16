@@ -27,7 +27,7 @@ const createInquiry = catchAsync(async (req, res) => {
   to: "Info@FloridaLuxurious.com", // you are receiving the message
   replyTo: email, // ✅ so you can reply directly to the sender
   subject: "New Contact Us Form Submission",
-  text: `Name: ${firstName} ${lastName}\nEmail: ${email} \nPhoneNumber:${phoneNumber} \nMessage: ${message}`,
+  text: `Name: ${firstName} ${lastName}\nEmail: ${email} \nPhone: ${phoneNumber} \nMessage: ${message}`,
 };
 
 
