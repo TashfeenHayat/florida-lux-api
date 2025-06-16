@@ -3,22 +3,22 @@ const catchAsync = require("../utils/catchAsync");
 const { Inquiry } = require("../models");
 
 // Create a transporter object using SMTP transport
-let transporter = nodemailer.createTransport({
-  service: "gmail", // true for 465, false for other ports
-  auth: {
-    user: "floridaluxurioussubmissions@gmail.com",
-    pass: "uofc trdb nceu bjzv",
-  },
-});
 // let transporter = nodemailer.createTransport({
-//   host: "smtpout.secureserver.net",
-//   port: 587,
-//   secure: false, // true for 465, false for other ports
+//   service: "gmail", // true for 465, false for other ports
 //   auth: {
-//     user: "Info@FloridaLuxurious.com",
-//     pass: "6R8a4M&zD#XpkE3N!Z#W",
+//     user: "floridaluxurioussubmissions@gmail.com",
+//     pass: "uofc trdb nceu bjzv",
 //   },
-// }); 
+// });
+let transporter = nodemailer.createTransport({
+  host: "smtpout.secureserver.net",
+  port: 587,
+  secure: false, // true for 465, false for other ports
+  auth: {
+    user: "Info@FloridaLuxurious.com",
+    pass: "6R8a4M&zD#XpkE3N!Z#W",
+  },
+}); 
 const createInquiry = catchAsync(async (req, res) => {
   const { firstName, lastName, email, message } = req.body;
   // Define email content
