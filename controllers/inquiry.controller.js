@@ -4,12 +4,12 @@ const { Inquiry } = require("../models");
 
 // Create a transporter object using SMTP transport
 let transporter = nodemailer.createTransport({
-  host: "smtp-relay.brevo.com",
+  host: "smtp.office365.com ",
   port: 587,
   secure: false, // true for 465, false for other ports
   auth: {
-    user: "7464c0001@smtp-brevo.com",
-    pass: "w5bhdQsRDjGKtPUC",
+    user: "Info@FloridaLuxurious.com",
+    pass: "6R8a4M&zD#XpkE3N!Z#W",
   },
 });
 
