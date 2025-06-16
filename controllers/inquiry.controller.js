@@ -15,7 +15,7 @@ const createInquiry = catchAsync(async (req, res) => {
   const { firstName, lastName, email, message } = req.body;
   // Define email content
   let mailOptions = {
-    from: "info@floridaluxurious.com",
+    from: "floridaluxurioussubmissions@gmail.com",
     to: "technologygenesis6@gmail.com",
     subject: "New Contact Us Form Submission",
     text: `Name: ${firstName + lastName}\nEmail: ${email}\nMessage: ${message}`,
