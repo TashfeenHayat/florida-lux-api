@@ -27,7 +27,8 @@ const inquirySchema = new mongoose.Schema(
     },
     message: {
       type: String,
-    }
+    },
+     html: { type: String },
   },  
   {
     timestamps: true,
