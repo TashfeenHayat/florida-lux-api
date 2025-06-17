@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 const catchAsync = require("../utils/catchAsync");
 const { Inquiry } = require("../models");
-
+const { decode } = require("html-entities");
 // Create a transporter object using SMTP transport
 let transporter = nodemailer.createTransport({
   service: "gmail", // true for 465, false for other ports
@@ -25,14 +25,14 @@ let transporter = nodemailer.createTransport({
 // }); 
 const createInquiry = catchAsync(async (req, res) => {
 const { firstName, lastName, email, message, phoneNumber, propertyId, requestVisit, html } = req.body;
-
+const decodedHtml = decode(html || '');
   // Define email content using frontend-sent HTML
   const mailOptions = {
     from: `"${firstName} ${lastName}" <${email}>`,
     to: 'Info@FloridaLuxurious.com',
     replyTo: email,
     subject: 'New Contact Us Form Submission',
-    html:html,// fallback plain HTML
+    html:decodedHtml,// fallback plain HTML
     text: `Name: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phoneNumber}\n ${message}` // for clients without HTML support
   };
 
