@@ -12,7 +12,7 @@ const blogRoute = require("./blog.route");
 const pressRoute = require("./press.route");
 const reportRoute = require("./report.route")
 const TestmonialRoute = require("./Testmonial.route")
-const proxyRoute=require("./imageproxy")
+const proxyImageRoute = require("./proxyimage.route");
 const router = express.Router();
 
 const defaultRoutes = [
@@ -62,9 +62,9 @@ const defaultRoutes = [
     path: "/Testimonial",
     route: TestmonialRoute,
   },{
-path: "/proxy",
-    route: proxyRoute,
-}
+    path: "/image-proxy",
+    route: proxyImageRoute,
+  }
 ];
 
 defaultRoutes.forEach((route) => {
