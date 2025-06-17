@@ -1,0 +1,55 @@
+{
+  "name": "simple-nodejs-app",
+  "version": "1.0.0",
+  "description": "Simple nodejs app",
+  "main": "index.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "cross-env NODE_ENV=development nodemon --max-old-space-size=131072 index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "Hydera",
+  "license": "ISC",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "dependencies": {
+    "axios": "^1.10.0",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.2",
+    "ejs": "^3.1.7",
+    "express": "^4.18.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^7.1.5",
+    "firebase-admin": "^12.0.0",
+    "html-entities": "^2.6.0",
+    "http-status": "^1.7.3",
+    "joi": "^17.12.1",
+    "mongoose": "^8.1.2",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "node-fetch": "^2.6.7",
+    "nodemailer": "^6.9.13",
+    "nodemon": "^2.0.20",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "path": "^0.12.7",
+    "request": "^2.88.2",
+    "simple-nodejs-app": "file:",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
+    "validator": "^13.11.0",
+    "winston": "^3.11.0",
+    "xss-clean": "^0.1.4"
+  }
+}
