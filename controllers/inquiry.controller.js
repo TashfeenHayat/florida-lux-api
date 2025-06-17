@@ -32,11 +32,11 @@ const { firstName, lastName, email, message, phoneNumber, propertyId, requestVis
     to: 'Info@FloridaLuxurious.com',
     replyTo: email,
     subject: 'New Contact Us Form Submission',
-    // fallback plain HTML
+    html:html// fallback plain HTML
     text: `Name: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phoneNumber}\nMessage: ${message}` // for clients without HTML support
   };
 
-
+console.log('Email HTML content:\n', html);
   // Send the email
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
