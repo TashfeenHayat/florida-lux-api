@@ -32,7 +32,7 @@ const { firstName, lastName, email, message, phoneNumber, propertyId, requestVis
     to: 'Info@FloridaLuxurious.com',
     replyTo: email,
     subject: 'New Contact Us Form Submission',
-    html: html , // fallback plain HTML
+    // fallback plain HTML
     text: `Name: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phoneNumber}\nMessage: ${message}` // for clients without HTML support
   };
 
