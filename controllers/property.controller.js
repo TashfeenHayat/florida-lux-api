@@ -3,8 +3,8 @@ const catchAsync = require("../utils/catchAsync");
 const { Agent, Filter, Property } = require("../models");
 const { Console } = require("winston/lib/winston/transports");
 const mlsApi = "https://api.simplyrets.com/";
-const mlsKey = "Basic " + btoa("mweis_18f15548" + ":" + "3346216f22164a64");
-
+// const mlsKey = "Basic " + btoa("mweis_18f15548" + ":" + "3346216f22164a64");
+const mlsKey = "Basic " + Buffer.from("mweis_18f15548:3346216f22164a64").toString("base64");
 // Define the options for the request
 let options = {
   headers: {
@@ -92,24 +92,53 @@ const getProperty = catchAsync(async (req, res) => {
   if (property) {
     options.url = `${mlsApi}properties/${property.mlsId}?count=true`;
     console.log("ali", req.query.mlsOnly)
-    if (req.query.mlsOnly) {
+    // if (req.query.mlsOnly) {
 
-      request(options, async (error, response, body) => {
-        if (error) {
-          console.error(error);
-          return res.status(500).send("Error fetching MLS data");
-        }
+    //   request(options, async (error, response, body) => {
+    //     if (error) {
+    //       console.error(error);
+    //       return res.status(500).send("Error fetching MLS data");
+    //     }
 
-        let mls = JSON.parse(body);
+    //     let mls = JSON.parse(body);
 
-        // Sort the data by price in descending order
-        if (mls && Array.isArray(mls)) {
+    //     // Sort the data by price in descending order
+    //     if (mls && Array.isArray(mls)) {
+    //       mls.sort((a, b) => b.price - a.price);
+    //     }
+
+    //     return res.status(200).send({ property, mls });
+    //   });
+    // } 
+  if (req.query.mlsOnly) {
+    options.url = `${mlsApi}properties/${property.mlsId}?count=true`;
+
+    request(options, (error, response, body) => {
+      if (error) {
+        console.error("Request error:", error);
+        return res.status(500).send("Error fetching MLS data");
+      }
+
+      if (response.statusCode !== 200) {
+        console.error("MLS API error:", response.statusCode, body);
+        return res.status(response.statusCode).send("MLS API responded with an error");
+      }
+
+      try {
+        const mls = JSON.parse(body);
+
+        if (Array.isArray(mls)) {
           mls.sort((a, b) => b.price - a.price);
         }
 
         return res.status(200).send({ property, mls });
-      });
-    } else {
+      } catch (parseError) {
+        console.error("JSON parse error:", parseError.message);
+        console.error("Raw body:", body);
+        return res.status(500).send("Invalid response from MLS API");
+      }
+    });
+  }else {
       console.log("ali")
       return res.status(200).send({
         property: Array.isArray(property) ? property.sort((a, b) => b.price - a.price) : property
